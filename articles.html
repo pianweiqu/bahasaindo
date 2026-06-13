@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文章练习 - TypeWords ID</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{background:#0a0f1d; color:#e5e7eb}
+  .tap{transition:transform .08s ease} .tap:active{transform:scale(.97)}
+</style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+<div class="fixed inset-0 -z-10 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,.15),transparent)]"></div>
+</div>
+
+<div class="flex-1 flex w-full">
+  
+  <common-sidebar class="hidden md:block"></common-sidebar>
+
+  <main class="flex-1 p-6 md:p-8 space-y-6 max-w-6xl mx-auto w-full">
+    <header class="flex items-center justify-between pb-4 border-b border-white/5">
+      <h2 class="text-sm font-semibold text-white/50 tracking-wider flex items-center gap-2">
+        <span>📄</span> 文章练习工作台
+      </h2>
+      <span class="font-bold text-cyan-400 italic md:hidden">TypeWords ID</span>
+    </header>
+
+    <div class="rounded-2xl border border-white/10 bg-[#0d1425] p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+      <div class="space-y-3 flex-1">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">💾</span>
+          <h3 id="panelBookName" class="text-2xl font-bold text-white">---</h3>
+        </div>
+        <div class="text-xs text-emerald-400">● 进度交换状态：本地浏览器离线安全同步</div>
+        <div class="pt-1">
+          <div class="flex justify-between text-xs text-white/40 mb-1">
+            <span>当前进度：已学 <span id="panelPctText">0%</span></span>
+            <span><span id="panelMasteredCount">0</span> / <span id="panelTotalCount">0</span> 篇</span>
+          </div>
+          <div class="w-full md:w-80 h-1.5 bg-white/5 rounded-full overflow-hidden">
+            <div id="panelProgressBar" class="h-full w-0 bg-gradient-to-r from-violet-500 to-cyan-400 transition-all duration-300"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-row md:flex-col items-center gap-4">
+        <div class="flex gap-2">
+          <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-center min-w-[70px]">
+            <div id="cardMastered" class="text-xl font-bold text-emerald-400">0</div>
+            <div class="text-[10px] text-white/40">已掌握文章</div>
+          </div>
+          <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-center min-w-[70px]">
+            <div id="cardWrong" class="text-xl font-bold text-rose-400">0</div>
+            <div class="text-[10px] text-white/40">曾敲错词汇</div>
+          </div>
+        </div>
+        <button onclick="startArticlePractice()" class="tap w-full md:w-auto px-6 py-3 rounded-xl bg-[#eab308] hover:bg-[#ca8a04] text-black font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-yellow-500/10">
+          继续听写练习 ➔
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h4 class="text-sm font-semibold text-white/50 tracking-wider">我的书籍</h4>
+          <span id="myBooksCount" class="text-xs px-2 py-0.5 rounded-full bg-white/5 text-white/40 font-mono">0</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+          <button onclick="clearAllCustomBooks()" class="text-rose-400/50 hover:text-rose-400 transition">清空个人书籍</button>
+          <button onclick="triggerAddCustomBook()" class="text-indigo-400 hover:text-indigo-300 font-semibold transition">+ 创建个人书籍</button>
+        </div>
+      </div>
+
+      <div id="myBooksShelf" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+        </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h4 class="text-sm font-semibold text-white/50 tracking-wider">推荐教材</h4>
+        <span class="text-xs text-white/30 hover:text-white/50 cursor-pointer transition">更多</span>
+      </div>
+
+      <div id="systemBooksShelf" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+        </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// 1. 系统内置书籍数据源
+const SYSTEM_ART_BOOKS = {
+  art_ind_basic: { name: '印尼语生存短文集', desc: 'Daily Survival Talk', count: 15, gradient: 'from-blue-600 to-cyan-500' },
+  art_ind_business: { name: '印尼商务公文精选', desc: 'Business Indo Pak', count: 20, gradient: 'from-emerald-600 to-teal-500' },
+  art_nce2: { name: '新概念英语 第二册', desc: 'NCE Book 2', count: 96, gradient: 'from-violet-600 to-purple-500' },
+  art_nce3: { name: '新概念英语 第三册', desc: 'NCE Book 3', count: 60, gradient: 'from-amber-500 to-orange-600' }
+};
+
+// 2. 状态读取与隔离定义
+let customArtBooks = JSON.parse(localStorage.getItem('tw_custom_art_books') || '[]');
+let activeArtBookId = localStorage.getItem('tw_active_art_book') || 'art_ind_basic';
+let artProgress = JSON.parse(localStorage.getItem('tw_art_progress_data') || '{}');
+
+// 全局基础数据大盘（读取原本背单词大盘避免卡片数据为空，保持原有全局成就感）
+let globalProgress = JSON.parse(localStorage.getItem('typewords_v3') || '{}');
+
+function getAllArtMetadata() {
+  const customMeta = {};
+  customArtBooks.forEach(b => {
+    customMeta[b.id] = { name: b.name, desc: b.desc, count: b.count, gradient: 'from-gray-700 to-slate-600', isCustom: true };
+  });
+  return { ...SYSTEM_ART_BOOKS, ...customMeta };
+}
+
+// 核心整合渲染器
+function renderArticleShelf() {
+  const allMeta = getAllArtMetadata();
+
+  if (!allMeta[activeArtBookId]) {
+    activeArtBookId = 'art_ind_basic';
+    localStorage.setItem('tw_active_art_book', 'art_ind_basic');
+  }
+
+  const meta = allMeta[activeArtBookId];
+
+  // A. 像素级同步更新顶部经典看板
+  document.getElementById('panelBookName').textContent = "文章：" + meta.name;
+
+  // 全局掌握总数映射（计算单词库掌握词，完美兼容旧成就系统）
+  let oldMastered = 0, oldWrong = 0;
+  Object.keys(globalProgress).forEach(k => {
+    Object.keys(globalProgress[k] || {}).forEach(w => {
+      if(globalProgress[k][w].c >= 2) oldMastered++;
+      if(globalProgress[k][w].w > 0) oldWrong++;
+    });
+  });
+
+  // 本地书籍内已学篇数计算
+  let curBookMastered = 0;
+  const curProg = artProgress[activeArtBookId] || {};
+  Object.keys(curProg).forEach(idx => { if(curProg[idx].completed) curBookMastered++; });
+
+  // 同步面板百分比及进度条
+  const pct = Math.round((curBookMastered / meta.count) * 100) || 0;
+  document.getElementById('panelPctText').textContent = pct + '%';
+  document.getElementById('panelMasteredCount').textContent = curBookMastered;
+  document.getElementById('panelTotalCount').textContent = meta.count;
+  document.getElementById('panelProgressBar').style.width = pct + '%';
+  
+  // 保留原有总掌握、曾敲错统计的威慑力外观
+  document.getElementById('cardMastered').textContent = oldMastered || curBookMastered;
+  document.getElementById('cardWrong').textContent = oldWrong;
+
+  // B. 重新搭建网格架子
+  const myShelf = document.getElementById('myBooksShelf');
+  const sysShelf = document.getElementById('systemBooksShelf');
+  myShelf.innerHTML = '';
+  sysShelf.innerHTML = '';
+
+  document.getElementById('myBooksCount').textContent = customArtBooks.length;
+
+  Object.keys(allMeta).forEach(k => {
+    const m = allMeta[k];
+    const isActive = (k === activeArtBookId);
+
+    let mCount = 0;
+    Object.keys(artProgress[k] || {}).forEach(idx => { if(artProgress[k][idx].completed) mCount++; });
+
+    const card = document.createElement('div');
+    card.className = `w-full cursor-pointer group flex flex-col space-y-2 relative`;
+    card.innerHTML = `
+      <div class="w-full h-36 rounded-xl bg-gradient-to-br ${m.gradient} p-3 flex flex-col justify-between shadow-lg relative transition tap group-hover:scale-[1.03] ${isActive ? 'ring-2 ring-indigo-500 ring-offset-2 ring-offset-[#0a0f1d]' : 'border border-white/5'}">
+        <div class="text-xs font-bold text-white leading-tight line-clamp-3">${m.name}</div>
+        <div class="text-[9px] text-white/60 font-mono mt-auto flex justify-between items-center w-full">
+          <span>${m.count} 篇</span>
+        </div>
+        ${m.isCustom ? `<button class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center text-[10px] text-white shadow opacity-0 group-hover:opacity-100 transition" onclick="event.stopPropagation(); deleteCustomBook('${k}')">✕</button>` : ''}
+      </div>
+      <div class="text-center">
+        <div class="text-[11px] font-medium text-white/80 truncate w-full px-1">${m.name}</div>
+        <div class="text-[10px] text-white/40 font-mono mt-0.5">${mCount} 篇已读</div>
+      </div>
+    `;
+
+    card.onclick = () => {
+      activeArtBookId = k;
+      localStorage.setItem('tw_active_art_book', k);
+      renderArticleShelf();
+    };
+
+    if (m.isCustom) {
+      myShelf.appendChild(card);
+    } else {
+      sysShelf.appendChild(card);
+    }
+  });
+
+  // 追加快捷创建卡片
+  const addBtnCard = document.createElement('div');
+  addBtnCard.className = "w-full h-36 rounded-xl border-2 border-dashed border-white/10 hover:border-indigo-500/50 bg-white/[0.01] hover:bg-white/[0.03] flex items-center justify-center cursor-pointer transition tap group";
+  addBtnCard.innerHTML = `<span class="text-2xl text-white/20 group-hover:text-indigo-400 transition">+</span>`;
+  addBtnCard.onclick = () => triggerAddCustomBook();
+  myShelf.appendChild(addBtnCard);
+}
+
+// 自由创建书籍
+function triggerAddCustomBook() {
+  const name = prompt("请输入您要自建的文章包/教材名称:");
+  if (!name || name.trim() === "") return;
+
+  const countStr = prompt("这本教材打算录入多少篇文章？", "12");
+  const count = parseInt(countStr) || 6;
+
+  const newId = 'art_custom_' + Date.now();
+  customArtBooks.push({ id: newId, name: name.trim(), desc: 'Custom Pack', count: count });
+  localStorage.setItem('tw_custom_art_books', JSON.stringify(customArtBooks));
+
+  activeArtBookId = newId;
+  localStorage.setItem('tw_active_art_book', newId);
+  renderArticleShelf();
+}
+
+function deleteCustomBook(id) {
+  if (confirm("确定要删除这本自建书吗？")) {
+    customArtBooks = customArtBooks.filter(b => b.id !== id);
+    localStorage.setItem('tw_custom_art_books', JSON.stringify(customArtBooks));
+    if (artProgress[id]) {
+      delete artProgress[id];
+      localStorage.setItem('tw_art_progress_data', JSON.stringify(artProgress));
+    }
+    renderArticleShelf();
+  }
+}
+
+function clearAllCustomBooks() {
+  if (confirm("确定要清空所有自己添加的书籍吗？")) {
+    customArtBooks = [];
+    localStorage.removeItem('tw_custom_art_books');
+    renderArticleShelf();
+  }
+}
+
+function startArticlePractice() {
+  localStorage.setItem('tw_current_typing_target_book', activeArtBookId);
+  window.location.href = 'typing.html';
+}
+
+renderArticleShelf();
+</script>
+
+<script src="sidebar.js"></script>
+</body>
+</html>
