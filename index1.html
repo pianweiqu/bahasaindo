@@ -35,17 +35,15 @@
       </div>
     </div>
     <div class="flex items-center gap-2 text-xs">
-      <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="headerVoiceLabel" class="text-white/70">Microsoft TTS</span>
-      </div>
-      <button id="resetBtn" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 tap text-white/70">重置</button>
+      <a href="dashboard.html" class="px-2.5 py-1.5 rounded-lg bg-violet-600/20 hover:bg-violet-600/40 border border-violet-500/30 tap text-violet-300 font-medium flex items-center gap-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>返回工作台
+      </a>
+      <button id="resetBtn" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 tap text-white/70">重置进度</button>
     </div>
   </div>
 </header>
 
 <main class="max-w-5xl mx-auto px-4 py-6 md:py-10">
-  <!-- Dictionary Tabs -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
     <button data-dict="life" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
       <div class="absolute inset-0 bg-gradient-to-b from-violet-500/30 to-transparent opacity-0 group-[.active]:opacity-100 transition"></div>
@@ -82,11 +80,9 @@
   </div>
 
   <div class="grid lg:grid-cols-[1.3fr_.7fr] gap-5">
-    <!-- Typing Card -->
     <div class="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1222] shadow-[0_0_0_1px_rgba(255,255,255,.02)_inset,0_20px_60px_-20px_rgba(0,0,0,.8)]">
       <div class="absolute -top-24 -right-24 w-72 h-72 bg-violet-600/20 blur-[80px] rounded-full"></div>
       <div class="relative p-6 md:p-10">
-        <!-- Progress -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-2">
             <span class="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-white/60">拼写模式</span>
@@ -99,20 +95,17 @@
           <div id="progressBar" class="h-full w-[3%] bg-gradient-to-r from-violet-500 to-cyan-400 transition-all duration-500"></div>
         </div>
 
-        <!-- Chinese -->
         <div class="text-center">
           <div id="zh" class="text-[42px] md:text-[56px] font-semibold tracking-wide leading-none">谢谢</div>
           <div id="ipa" class="mt-2 mono text-cyan-300/90 text-base md:text-lg">te-ri-ma ka-sih</div>
         </div>
 
-        <!-- Mask -->
         <div id="mask" class="mt-8 text-center text-[28px] md:text-[34px] tracking-[0.4em] text-white/25 select-none">• • • • • • • • •</div>
         <div id="speakIndicator" class="hidden mt-3 text-center text-sm text-violet-300/90 flex items-center justify-center gap-2">
           <span class="inline-flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:0ms]"></span><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:150ms]"></span><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:300ms]"></span></span>
           <span>正在朗读词汇，请听完再输入</span>
         </div>
 
-        <!-- Input -->
         <div class="mt-6 max-w-xl mx-auto">
           <div class="relative">
             <input id="input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
@@ -127,7 +120,6 @@
           </div>
         </div>
 
-        <!-- Example -->
         <div class="mt-8 text-center">
           <div class="text-[11px] uppercase tracking-widest text-white/40 mb-1">Contoh 例句</div>
           <div id="example" class="text-lg md:text-xl text-white/70 italic">Terima kasih banyak.</div>
@@ -135,7 +127,6 @@
       </div>
     </div>
 
-    <!-- Dashboard -->
     <div class="space-y-4">
       <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
         <div class="flex items-center justify-between mb-3">
@@ -166,10 +157,10 @@
         <div class="font-medium mb-2">使用技巧</div>
         <ul class="text-sm text-white/60 space-y-1.5 list-disc pl-4">
           <li>先听朗读，听完再拼写，强化听-写链接</li>
-          <li>印尼语基本按拼写读，c 读 ch，j 读 j（类似「杰」）</li>
+          <li>印尼语基本按拼写读，c 读 ch，j 读 j</li>
           <li>按 Enter 提交，输错会抖动提示</li>
           <li>掌握标准：连续答对 2 次即标记掌握</li>
-          <li>数据自动保存在浏览器本地</li>
+          <li>数据会自动与主工作台实时打通同步</li>
         </ul>
       </div>
 
@@ -183,13 +174,13 @@
           <button id="voiceMale" data-gender="male" class="voice-btn tap flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">男声 Ardi</button>
         </div>
         <div id="voiceStatus" class="mt-2.5 text-xs text-white/50">当前语音：加载中…</div>
-        <div class="mt-2 text-xs text-white/40">切词后自动朗读印尼语词汇，朗读结束后才可输入</div>
       </div>
     </div>
   </div>
 </main>
 
 <script>
+// --- 核心打字练习核心配置与词库 ---
 const DICTS = {
   life: {
     name: '生活用语30词',
@@ -269,7 +260,7 @@ const DICTS = {
       {idn:'belum',zh:'还没',ipa:'be-lum',ex:'Belum, gue belum.'},
       {idn:'ayo',zh:'走吧',ipa:'a-yo',ex:'Ayo pergi!'},
       {idn:'kuy',zh:'走吧(俚)',ipa:'kuy',ex:'Kuy makan!'},
-      {idn:'macet',zh:'堵车',ipa:'ma-cet (c=ch)',ex:'Jakarta macet parah.'},
+      {idn:'macet',zh:'堵车',ipa:'ma-cet',ex:'Jakarta macet parah.'},
       {idn:'ojek',zh:'摩的',ipa:'o-jek',ex:'Naik ojek aja.'},
       {idn:'Gojek',zh:'网约摩托',ipa:'Go-jek',ex:'Pesan Gojek ya.'},
       {idn:'Grab',zh:'网约车',ipa:'Grab',ex:'Naik Grab aja.'},
@@ -301,12 +292,12 @@ const DICTS = {
       {idn:'follow',zh:'关注',ipa:'fol-low',ex:'Follow gue dong.'},
       {idn:'unfollow',zh:'取关',ipa:'un-fol-low',ex:'Dia unfollow gue.'},
       {idn:'ghosting',zh:'消失',ipa:'gos-ting',ex:'Abis itu dia ghosting.'},
-      {idn:'bucin',zh:'恋爱脑',ipa:'bu-cin (c=ch)',ex:'Dasar bucin.'},
+      {idn:'bucin',zh:'恋爱脑',ipa:'bu-cin',ex:'Dasar bucin.'},
       {idn:'jomblo',zh:'单身',ipa:'jom-blo',ex:'Gue masih jomblo.'},
       {idn:'PHP',zh:'放鸽子',ipa:'pe-ha-pe',ex:'Jangan PHP dong.'},
       {idn:'OTW',zh:'在路上',ipa:'o-te-we',ex:'Gue OTW ya.'},
       {idn:'gabut',zh:'无聊',ipa:'ga-but',ex:'Lagi gabut nih.'},
-      {idn:'curhat',zh:'倾诉',ipa:'cur-hat (c=ch)',ex:'Gue mau curhat.'},
+      {idn:'curhat',zh:'倾诉',ipa:'cur-hat',ex:'Gue mau curhat.'},
       {idn:'healing',zh:'疗愈旅行',ipa:'hi-ling',ex:'Butuh healing ke Bali.'},
       {idn:'spill',zh:'爆料',ipa:'spil',ex:'Spill dong ceritanya.'},
     ]
@@ -324,6 +315,31 @@ let audioCtx = null;
 let voiceGender = localStorage.getItem('tw_voice_gender') || 'female';
 let speakToken = 0;
 let currentAudio = null;
+
+// --- 💻 新增高级数据分析组件：统计练习时间 & 每日打卡机制 💻 ---
+setInterval(() => {
+  let totalMin = parseFloat(localStorage.getItem('tw_total_duration') || '0');
+  let todayMin = parseFloat(localStorage.getItem('tw_today_duration') || '0');
+  let lastDate = localStorage.getItem('tw_last_active_date') || '';
+  let todayStr = new Date().toISOString().slice(0, 10);
+  
+  if(lastDate !== todayStr) {
+    todayMin = 0;
+    localStorage.setItem('tw_last_active_date', todayStr);
+    
+    // 计算连续打卡天数
+    let streak = parseInt(localStorage.getItem('tw_streak_days') || '0');
+    let history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]');
+    if (!history.includes(todayStr)) {
+      history.push(todayStr);
+      localStorage.setItem('tw_history_dates', JSON.stringify(history));
+      localStorage.setItem('tw_streak_days', (streak + 1).toString());
+    }
+  }
+  
+  localStorage.setItem('tw_total_duration', (totalMin + 1/60).toFixed(2));
+  localStorage.setItem('tw_today_duration', (todayMin + 1/60).toFixed(2));
+}, 1000);
 
 const MS_VOICES = {
   female: { edge: 'GadisNeural', label: 'Gadis', patterns: [/gadis/i, /female/i] },
@@ -344,9 +360,7 @@ function escapeXml(s) {
 
 function getIdVoices() {
   if (!window.speechSynthesis) return [];
-  return speechSynthesis.getVoices().filter(v =>
-    v.lang.replace('_', '-').toLowerCase().startsWith('id')
-  );
+  return speechSynthesis.getVoices().filter(v => v.lang.replace('_', '-').toLowerCase().startsWith('id'));
 }
 
 function pickMsVoice(gender) {
@@ -369,10 +383,7 @@ function edgeVoiceFullName(gender) {
 function stopSpeaking() {
   speakToken++;
   speechSynthesis?.cancel();
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
-  }
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
 }
 
 function setInputLocked(locked) {
@@ -389,37 +400,7 @@ function updateVoiceUI() {
   const cfg = MS_VOICES[voiceGender] || MS_VOICES.female;
   const voice = pickMsVoice(voiceGender);
   const local = voice ? voice.name : null;
-  const label = voiceGender === 'male' ? '男声 Ardi' : '女声 Gadis';
-  document.getElementById('voiceStatus').textContent = local
-    ? `当前语音：${local}`
-    : `当前语音：Microsoft ${cfg.label} (Neural 在线)`;
-  document.getElementById('headerVoiceLabel').textContent = `Microsoft TTS · ${label}`;
-}
-
-function speakWithWebSpeech(text, token, voice) {
-  return new Promise(resolve => {
-    if (!window.speechSynthesis || !voice) { resolve(false); return; }
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'id-ID';
-    u.voice = voice;
-    u.rate = 0.92;
-    u.onend = () => resolve(token === speakToken);
-    u.onerror = () => resolve(false);
-    speechSynthesis.speak(u);
-  });
-}
-
-function speakWithWebSpeechPitch(text, token) {
-  return new Promise(resolve => {
-    if (!window.speechSynthesis) { resolve(false); return; }
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'id-ID';
-    u.rate = 0.92;
-    u.pitch = voiceGender === 'female' ? 1.15 : 0.85;
-    u.onend = () => resolve(token === speakToken);
-    u.onerror = () => resolve(false);
-    speechSynthesis.speak(u);
-  });
+  document.getElementById('voiceStatus').textContent = local ? `当前语音：${local}` : `当前语音：Microsoft ${cfg.label} (Neural 在线)`;
 }
 
 async function speakWithEdgeTts(text, token) {
@@ -431,7 +412,7 @@ async function speakWithEdgeTts(text, token) {
     headers: {
       'Content-Type': 'application/ssml+xml',
       'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
+      'User-Agent': 'Mozilla/5.0'
     },
     body: ssml
   });
@@ -451,19 +432,14 @@ async function msSpeak(text) {
   const token = ++speakToken;
   speechSynthesis?.cancel();
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-
-  try {
-    if (await speakWithEdgeTts(text, token)) return true;
-  } catch (e) {}
+  try { if (await speakWithEdgeTts(text, token)) return true; } catch (e) {}
   if (token !== speakToken) return false;
-
   const voice = pickMsVoice(voiceGender);
   if (voice && voiceMatchesGender(voice, voiceGender)) {
-    if (await speakWithWebSpeech(text, token, voice)) return true;
+    const u = new SpeechSynthesisUtterance(text); u.lang='id-ID'; u.voice=voice; u.rate=0.92;
+    u.onend=()=> stopSpeaking(); speechSynthesis.speak(u); return true;
   }
-  if (token !== speakToken) return false;
-
-  return speakWithWebSpeechPitch(text, token);
+  return false;
 }
 
 async function speakCurrent() {
@@ -474,20 +450,14 @@ async function speakCurrent() {
   document.getElementById('input').focus();
 }
 
-function initVoices() {
-  updateVoiceUI();
-}
+function initVoices() { updateVoiceUI(); }
 
 function typeSound(){
   try{
     if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'triangle';
-    o.frequency.value = 600 + Math.random()*120;
-    g.gain.value = 0.015;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + 0.025);
+    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = 'triangle'; o.frequency.value = 600 + Math.random()*120; g.gain.value = 0.015;
+    o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + 0.025);
   }catch(e){}
 }
 
@@ -496,10 +466,7 @@ function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
 async function nextWord(){
   stopSpeaking();
   const dict = DICTS[state.dict];
-  if(state.queue.length===0){
-    state.queue = shuffle(dict.words);
-    state.seen = 0;
-  }
+  if(state.queue.length===0){ state.queue = shuffle(dict.words); state.seen = 0; }
   currentWord = state.queue.shift();
   state.seen++;
   document.getElementById('zh').textContent = currentWord.zh;
@@ -518,10 +485,7 @@ async function nextWord(){
   setInputLocked(true);
   const word = currentWord;
   await Promise.race([msSpeak(word.idn), new Promise(r => setTimeout(r, 6000))]);
-  if (currentWord === word) {
-    setInputLocked(false);
-    input.focus();
-  }
+  if (currentWord === word) { setInputLocked(false); input.focus(); }
 }
 
 function saveProgress(correct){
@@ -529,6 +493,14 @@ function saveProgress(correct){
   if(!progress[state.dict][currentWord.idn]) progress[state.dict][currentWord.idn]={c:0,w:0};
   if(correct) progress[state.dict][currentWord.idn].c++; else progress[state.dict][currentWord.idn].w++;
   localStorage.setItem('typewords_v3', JSON.stringify(progress));
+  
+  // 激活今日有单词练习
+  let todayStr = new Date().toISOString().slice(0, 10);
+  let history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]');
+  if (!history.includes(todayStr)) {
+    history.push(todayStr);
+    localStorage.setItem('tw_history_dates', JSON.stringify(history));
+  }
 }
 
 function updateStats(){
@@ -556,13 +528,11 @@ function checkAnswer(){
   const correct = val === target;
   saveProgress(correct);
   if(correct){
-    input.classList.remove('border-white/10','border-red-500');
-    input.classList.add('border-green-500');
+    input.classList.remove('border-white/10','border-red-500'); input.classList.add('border-green-500');
     input.disabled = true;
     setTimeout(()=>{ input.disabled=false; nextWord(); }, 650);
   }else{
-    input.classList.remove('border-white/10');
-    input.classList.add('border-red-500');
+    input.classList.remove('border-white/10'); input.classList.add('border-red-500');
     input.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:180});
     setTimeout(()=>{ input.classList.remove('border-red-500'); input.classList.add('border-white/10'); }, 800);
   }
@@ -597,40 +567,25 @@ document.getElementById('speakBtn').onclick = speakCurrent;
 document.getElementById('skipBtn').onclick = nextWord;
 document.getElementById('hintBtn').onclick = ()=>{
   const input = document.getElementById('input');
-  const reveal = Math.ceil(currentWord.idn.length * 0.4);
-  input.value = currentWord.idn.slice(0, reveal);
-  input.focus();
-  typeSound();
+  input.value = currentWord.idn.slice(0, Math.ceil(currentWord.idn.length * 0.4));
+  input.focus(); typeSound();
 };
 document.getElementById('resetBtn').onclick = ()=>{
   if(confirm('重置所有学习进度？')){
     localStorage.removeItem('typewords_v3');
-    progress = {};
-    state.queue = [];
-    nextWord();
+    progress = {}; state.queue = []; nextWord();
   }
 };
 
 document.querySelectorAll('.voice-btn').forEach(btn => {
   btn.onclick = () => {
-    voiceGender = btn.dataset.gender;
-    localStorage.setItem('tw_voice_gender', voiceGender);
-    updateVoiceUI();
-    if (currentWord) speakCurrent();
+    voiceGender = btn.dataset.gender; localStorage.setItem('tw_voice_gender', voiceGender);
+    updateVoiceUI(); if (currentWord) speakCurrent();
   };
 });
 
-if (window.speechSynthesis) {
-  speechSynthesis.onvoiceschanged = initVoices;
-  initVoices();
-} else {
-  document.getElementById('voiceStatus').textContent = '当前语音：Microsoft Edge TTS (Neural)';
-}
-
-initTabs();
-updateVoiceUI();
-nextWord();
+if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = initVoices; initVoices(); }
+initTabs(); updateVoiceUI(); nextWord();
 </script>
-<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
 </body>
 </html>
