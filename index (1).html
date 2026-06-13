@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeWords ID v3 - 印尼语生存词典</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+  .mono{font-family:'JetBrains Mono',monospace}
+  body{background:#050810; color:#e5e7eb}
+  ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#1f2937;border-radius:3px}
+  .glass{background:rgba(15,22,41,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .tap{transition:transform .08s ease} .tap:active{transform:scale(.97)}
+  input::placeholder{color:#4b5563}
+  input:disabled{opacity:.55;cursor:not-allowed}
+  .voice-btn.active{border-color:rgba(139,92,246,.6)!important;background:rgba(139,92,246,.15)!important;color:#c4b5fd}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="fixed inset-0 -z-10">
+  <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,.25),transparent),radial-gradient(600px_300px_at_90%_20%,rgba(6,182,212,.2),transparent)]"></div>
+</div>
+
+<header class="sticky top-0 z-40 glass border-b border-white/5">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center font-bold text-black">ID</div>
+      <div>
+        <div class="font-semibold leading-tight">TypeWords ID v3</div>
+        <div class="text-xs text-white/50 -mt-0.5">印尼语生存词典 · 沉浸式拼写</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 text-xs">
+      <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="headerVoiceLabel" class="text-white/70">Microsoft TTS</span>
+      </div>
+      <button id="resetBtn" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 tap text-white/70">重置</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-6 md:py-10">
+  <!-- Dictionary Tabs -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
+    <button data-dict="life" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
+      <div class="absolute inset-0 bg-gradient-to-b from-violet-500/30 to-transparent opacity-0 group-[.active]:opacity-100 transition"></div>
+      <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-violet-500/50">
+        <div class="text-[11px] text-white/50">DICT 1</div>
+        <div class="font-medium">生活用语30词</div>
+        <div class="text-xs text-white/40 mt-0.5">Daily Survival</div>
+      </div>
+    </button>
+    <button data-dict="numbers" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
+      <div class="absolute inset-0 bg-gradient-to-b from-cyan-500/30 to-transparent opacity-0 group-[.active]:opacity-100 transition"></div>
+      <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-cyan-500/50">
+        <div class="text-[11px] text-white/50">DICT 2</div>
+        <div class="font-medium">数字时间25词</div>
+        <div class="text-xs text-white/40 mt-0.5">Numbers & Time</div>
+      </div>
+    </button>
+    <button data-dict="jakarta" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
+      <div class="absolute inset-0 bg-gradient-to-b from-amber-500/30 to-transparent opacity-0 group-[.active]:opacity-100 transition"></div>
+      <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-amber-500/50">
+        <div class="text-[11px] text-white/50">DICT 3</div>
+        <div class="font-medium">雅加达本地25词</div>
+        <div class="text-xs text-white/40 mt-0.5">Jakarta Lokal</div>
+      </div>
+    </button>
+    <button data-dict="slang" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
+      <div class="absolute inset-0 bg-gradient-to-b from-fuchsia-500/30 to-transparent opacity-0 group-[.active]:opacity-100 transition"></div>
+      <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-fuchsia-500/50">
+        <div class="text-[11px] text-white/50">DICT 4</div>
+        <div class="font-medium">社交俚语20词</div>
+        <div class="text-xs text-white/40 mt-0.5">Gaul & Slang</div>
+      </div>
+    </button>
+  </div>
+
+  <div class="grid lg:grid-cols-[1.3fr_.7fr] gap-5">
+    <!-- Typing Card -->
+    <div class="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1222] shadow-[0_0_0_1px_rgba(255,255,255,.02)_inset,0_20px_60px_-20px_rgba(0,0,0,.8)]">
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-violet-600/20 blur-[80px] rounded-full"></div>
+      <div class="relative p-6 md:p-10">
+        <!-- Progress -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-white/60">拼写模式</span>
+            <span id="modeTag" class="text-xs px-2 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-300"> survival</span>
+          </div>
+          <div class="text-xs text-white/50"><span id="idxNow">1</span>/<span id="idxTotal">30</span></div>
+        </div>
+
+        <div class="w-full h-[2px] bg-white/5 rounded-full overflow-hidden mb-8">
+          <div id="progressBar" class="h-full w-[3%] bg-gradient-to-r from-violet-500 to-cyan-400 transition-all duration-500"></div>
+        </div>
+
+        <!-- Chinese -->
+        <div class="text-center">
+          <div id="zh" class="text-[42px] md:text-[56px] font-semibold tracking-wide leading-none">谢谢</div>
+          <div id="ipa" class="mt-2 mono text-cyan-300/90 text-base md:text-lg">te-ri-ma ka-sih</div>
+        </div>
+
+        <!-- Mask -->
+        <div id="mask" class="mt-8 text-center text-[28px] md:text-[34px] tracking-[0.4em] text-white/25 select-none">• • • • • • • • •</div>
+        <div id="speakIndicator" class="hidden mt-3 text-center text-sm text-violet-300/90 flex items-center justify-center gap-2">
+          <span class="inline-flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:0ms]"></span><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:150ms]"></span><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce [animation-delay:300ms]"></span></span>
+          <span>正在朗读词汇，请听完再输入</span>
+        </div>
+
+        <!-- Input -->
+        <div class="mt-6 max-w-xl mx-auto">
+          <div class="relative">
+            <input id="input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+              class="w-full text-center text-2xl md:text-[28px] py-4 md:py-5 rounded-2xl bg-[#060a14] border-2 border-white/10 focus:border-violet-500/60 outline-none transition placeholder:text-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,.03)]"
+              placeholder="ketik di sini...">
+            <div class="pointer-events-none absolute inset-0 rounded-2xl ring-0 focus-within:ring-2 ring-violet-500/20 transition"></div>
+          </div>
+          <div class="flex items-center justify-center gap-2 mt-3">
+            <button id="speakBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm flex items-center gap-1.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>朗读</button>
+            <button id="hintBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm">提示</button>
+            <button id="skipBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm text-white/70">跳过 ↵</button>
+          </div>
+        </div>
+
+        <!-- Example -->
+        <div class="mt-8 text-center">
+          <div class="text-[11px] uppercase tracking-widest text-white/40 mb-1">Contoh 例句</div>
+          <div id="example" class="text-lg md:text-xl text-white/70 italic">Terima kasih banyak.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="space-y-4">
+      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="font-medium">学习仪表盘</div>
+          <div class="text-xs text-white/50">本地保存</div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
+            <div class="text-[11px] text-white/50">总词数</div>
+            <div id="statTotal" class="text-2xl font-semibold mt-1">0</div>
+          </div>
+          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
+            <div class="text-[11px] text-white/50">已掌握</div>
+            <div id="statMastered" class="text-2xl font-semibold mt-1 text-emerald-400">0</div>
+          </div>
+          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
+            <div class="text-[11px] text-white/50">准确率</div>
+            <div id="statAcc" class="text-2xl font-semibold mt-1">0%</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="flex justify-between text-[11px] text-white/50 mb-1.5"><span>本词典进度</span><span id="pctText">0%</span></div>
+          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div id="pctBar" class="h-full w-0 bg-gradient-to-r from-violet-500 to-cyan-400"></div></div>
+        </div>
+      </div>
+
+      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
+        <div class="font-medium mb-2">使用技巧</div>
+        <ul class="text-sm text-white/60 space-y-1.5 list-disc pl-4">
+          <li>先听朗读，听完再拼写，强化听-写链接</li>
+          <li>印尼语基本按拼写读，c 读 ch，j 读 j（类似「杰」）</li>
+          <li>按 Enter 提交，输错会抖动提示</li>
+          <li>掌握标准：连续答对 2 次即标记掌握</li>
+          <li>数据自动保存在浏览器本地</li>
+        </ul>
+      </div>
+
+      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
+        <div class="flex items-center justify-between">
+          <div class="font-medium">声音设置</div>
+          <div class="text-xs text-white/50">Microsoft TTS</div>
+        </div>
+        <div class="mt-3 flex items-center gap-2 text-sm">
+          <button id="voiceFemale" data-gender="female" class="voice-btn tap flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">女声 Gadis</button>
+          <button id="voiceMale" data-gender="male" class="voice-btn tap flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">男声 Ardi</button>
+        </div>
+        <div id="voiceStatus" class="mt-2.5 text-xs text-white/50">当前语音：加载中…</div>
+        <div class="mt-2 text-xs text-white/40">切词后自动朗读印尼语词汇，朗读结束后才可输入</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const DICTS = {
+  life: {
+    name: '生活用语30词',
+    words: [
+      {idn:'halo',zh:'你好',ipa:'ha-lo',ex:'Halo, apa kabar?'},
+      {idn:'selamat pagi',zh:'早上好',ipa:'se-la-mat pa-gi',ex:'Selamat pagi!'},
+      {idn:'selamat siang',zh:'中午好',ipa:'se-la-mat si-ang',ex:'Selamat siang.'},
+      {idn:'selamat malam',zh:'晚上好',ipa:'se-la-mat ma-lam',ex:'Selamat malam.'},
+      {idn:'terima kasih',zh:'谢谢',ipa:'te-ri-ma ka-sih',ex:'Terima kasih banyak.'},
+      {idn:'sama-sama',zh:'不客气',ipa:'sa-ma sa-ma',ex:'Sama-sama.'},
+      {idn:'maaf',zh:'对不起',ipa:'ma-af',ex:'Maaf, saya terlambat.'},
+      {idn:'permisi',zh:'打扰一下',ipa:'per-mi-si',ex:'Permisi, Pak.'},
+      {idn:'tolong',zh:'请帮忙',ipa:'to-long',ex:'Tolong bantu saya.'},
+      {idn:'ya',zh:'是的',ipa:'ya',ex:'Ya, benar.'},
+      {idn:'tidak',zh:'不',ipa:'ti-dak',ex:'Tidak, terima kasih.'},
+      {idn:'boleh',zh:'可以',ipa:'bo-leh',ex:'Boleh masuk?'},
+      {idn:'tidak boleh',zh:'不可以',ipa:'ti-dak bo-leh',ex:'Tidak boleh merokok.'},
+      {idn:'mau',zh:'想要',ipa:'mau',ex:'Saya mau makan.'},
+      {idn:'tidak mau',zh:'不想要',ipa:'ti-dak mau',ex:'Saya tidak mau pedas.'},
+      {idn:'ada',zh:'有',ipa:'a-da',ex:'Ada air?'},
+      {idn:'tidak ada',zh:'没有',ipa:'ti-dak a-da',ex:'Tidak ada uang.'},
+      {idn:'makan',zh:'吃',ipa:'ma-kan',ex:'Mau makan apa?'},
+      {idn:'minum',zh:'喝',ipa:'mi-num',ex:'Minum air putih.'},
+      {idn:'air putih',zh:'白开水',ipa:'a-ir pu-tih',ex:'Satu air putih.'},
+      {idn:'nasi',zh:'米饭',ipa:'na-si',ex:'Nasi goreng satu.'},
+      {idn:'pedas',zh:'辣',ipa:'pe-das',ex:'Ini pedas?'},
+      {idn:'tidak pedas',zh:'不辣',ipa:'ti-dak pe-das',ex:'Jangan pedas ya.'},
+      {idn:'mahal',zh:'贵',ipa:'ma-hal',ex:'Wah, mahal banget.'},
+      {idn:'murah',zh:'便宜',ipa:'mu-rah',ex:'Itu murah.'},
+      {idn:'di mana',zh:'在哪里',ipa:'di ma-na',ex:'Di mana toilet?'},
+      {idn:'toilet',zh:'洗手间',ipa:'toi-let',ex:'Toilet di mana?'},
+      {idn:'berapa harga',zh:'多少钱',ipa:'be-ra-pa har-ga',ex:'Berapa harga ini?'},
+      {idn:'saya tidak mengerti',zh:'我不懂',ipa:'sa-ya ti-dak me-nger-ti',ex:'Maaf, saya tidak mengerti.'},
+      {idn:'saya vegetarian',zh:'我是素食者',ipa:'sa-ya ve-ge-ta-ri-an',ex:'Saya vegetarian, tidak makan daging.'},
+    ]
+  },
+  numbers: {
+    name: '数字时间25词',
+    words: [
+      {idn:'satu',zh:'一',ipa:'sa-tu',ex:'Satu dua tiga.'},
+      {idn:'dua',zh:'二',ipa:'du-a',ex:'Dua orang.'},
+      {idn:'tiga',zh:'三',ipa:'ti-ga',ex:'Jam tiga.'},
+      {idn:'empat',zh:'四',ipa:'em-pat',ex:'Empat ribu.'},
+      {idn:'lima',zh:'五',ipa:'li-ma',ex:'Lima menit.'},
+      {idn:'enam',zh:'六',ipa:'e-nam',ex:'Jam enam pagi.'},
+      {idn:'tujuh',zh:'七',ipa:'tu-juh',ex:'Jam tujuh malam.'},
+      {idn:'delapan',zh:'八',ipa:'de-la-pan',ex:'Delapan orang.'},
+      {idn:'sembilan',zh:'九',ipa:'sem-bi-lan',ex:'Sembilan ribu.'},
+      {idn:'sepuluh',zh:'十',ipa:'se-pu-luh',ex:'Sepuluh ribu.'},
+      {idn:'sebelas',zh:'十一',ipa:'se-be-las',ex:'Jam sebelas.'},
+      {idn:'dua belas',zh:'十二',ipa:'du-a be-las',ex:'Jam dua belas siang.'},
+      {idn:'dua puluh',zh:'二十',ipa:'du-a pu-luh',ex:'Dua puluh ribu.'},
+      {idn:'lima puluh',zh:'五十',ipa:'li-ma pu-luh',ex:'Lima puluh ribu.'},
+      {idn:'seratus',zh:'一百',ipa:'se-ra-tus',ex:'Seratus ribu rupiah.'},
+      {idn:'seribu',zh:'一千',ipa:'se-ri-bu',ex:'Seribu rupiah.'},
+      {idn:'sejuta',zh:'一百万',ipa:'se-ju-ta',ex:'Sejuta rupiah.'},
+      {idn:'jam',zh:'点钟',ipa:'jam',ex:'Jam berapa sekarang?'},
+      {idn:'menit',zh:'分钟',ipa:'me-nit',ex:'Tunggu lima menit.'},
+      {idn:'detik',zh:'秒',ipa:'de-tik',ex:'Sebentar ya.'},
+      {idn:'hari ini',zh:'今天',ipa:'ha-ri i-ni',ex:'Hari ini panas.'},
+      {idn:'besok',zh:'明天',ipa:'be-sok',ex:'Besok kita pergi.'},
+      {idn:'kemarin',zh:'昨天',ipa:'ke-ma-rin',ex:'Kemarin hujan.'},
+      {idn:'pagi',zh:'早上',ipa:'pa-gi',ex:'Pagi-pagi sekali.'},
+      {idn:'malam',zh:'晚上',ipa:'ma-lam',ex:'Selamat malam.'},
+    ]
+  },
+  jakarta: {
+    name: '雅加达本地25词',
+    words: [
+      {idn:'gue',zh:'我 (雅加达)',ipa:'gue',ex:'Gue lapar nih.'},
+      {idn:'lu',zh:'你 (雅加达)',ipa:'lu',ex:'Lu mau kemana?'},
+      {idn:'enggak',zh:'不',ipa:'eng-gak',ex:'Enggak mau.'},
+      {idn:'nggak',zh:'不',ipa:'ng-gak',ex:'Nggak ada duit.'},
+      {idn:'banget',zh:'非常',ipa:'ba-nget',ex:'Enak banget!'},
+      {idn:'aja',zh:'就',ipa:'a-ja',ex:'Gini aja.'},
+      {idn:'udah',zh:'已经',ipa:'u-dah',ex:'Udah makan belum?'},
+      {idn:'belum',zh:'还没',ipa:'be-lum',ex:'Belum, gue belum.'},
+      {idn:'ayo',zh:'走吧',ipa:'a-yo',ex:'Ayo pergi!'},
+      {idn:'kuy',zh:'走吧(俚)',ipa:'kuy',ex:'Kuy makan!'},
+      {idn:'macet',zh:'堵车',ipa:'ma-cet (c=ch)',ex:'Jakarta macet parah.'},
+      {idn:'ojek',zh:'摩的',ipa:'o-jek',ex:'Naik ojek aja.'},
+      {idn:'Gojek',zh:'网约摩托',ipa:'Go-jek',ex:'Pesan Gojek ya.'},
+      {idn:'Grab',zh:'网约车',ipa:'Grab',ex:'Naik Grab aja.'},
+      {idn:'warteg',zh:'平价饭馆',ipa:'war-teg',ex:'Makan di warteg.'},
+      {idn:'warung',zh:'小卖部',ipa:'wa-rung',ex:'Beli di warung.'},
+      {idn:'kos',zh:'出租房',ipa:'kos',ex:'Gue anak kos.'},
+      {idn:'nongkrong',zh:'闲逛',ipa:'nong-krong',ex:'Yuk nongkrong.'},
+      {idn:'santai',zh:'放松',ipa:'san-tai',ex:'Santai aja kali.'},
+      {idn:'baper',zh:'玻璃心',ipa:'ba-per',ex:'Jangan baper dong.'},
+      {idn:'lebay',zh:'夸张',ipa:'le-bay',ex:'Lu lebay banget.'},
+      {idn:'mager',zh:'懒得动',ipa:'ma-ger',ex:'Gue mager hari ini.'},
+      {idn:'kepo',zh:'八卦',ipa:'ke-po',ex:'Ih kepo banget.'},
+      {idn:'bokek',zh:'没钱',ipa:'bo-kok',ex:'Gue lagi bokek.'},
+      {idn:'anak Jaksel',zh:'雅加达南区人',ipa:'a-nak Jak-sel',ex:'Lu anak Jaksel ya?'},
+    ]
+  },
+  slang: {
+    name: '社交俚语20词',
+    words: [
+      {idn:'sialan',zh:'该死',ipa:'si-a-lan',ex:'Sialan, lupa dompet.'},
+      {idn:'gila',zh:'疯了',ipa:'gi-la',ex:'Gila, mahal banget.'},
+      {idn:'parah',zh:'太过分',ipa:'pa-rah',ex:'Macetnya parah.'},
+      {idn:'anjir',zh:'卧槽',ipa:'an-jir',ex:'Anjir, keren banget!'},
+      {idn:'buset',zh:'我去',ipa:'bu-set',ex:'Buset, rame amat.'},
+      {idn:'woi',zh:'喂',ipa:'woi',ex:'Woi, dengerin!'},
+      {idn:'bro',zh:'兄弟',ipa:'bro',ex:'Thanks bro.'},
+      {idn:'sis',zh:'姐妹',ipa:'sis',ex:'Hai sis!'},
+      {idn:'DM',zh:'私信',ipa:'di-em',ex:'DM gue aja.'},
+      {idn:'follow',zh:'关注',ipa:'fol-low',ex:'Follow gue dong.'},
+      {idn:'unfollow',zh:'取关',ipa:'un-fol-low',ex:'Dia unfollow gue.'},
+      {idn:'ghosting',zh:'消失',ipa:'gos-ting',ex:'Abis itu dia ghosting.'},
+      {idn:'bucin',zh:'恋爱脑',ipa:'bu-cin (c=ch)',ex:'Dasar bucin.'},
+      {idn:'jomblo',zh:'单身',ipa:'jom-blo',ex:'Gue masih jomblo.'},
+      {idn:'PHP',zh:'放鸽子',ipa:'pe-ha-pe',ex:'Jangan PHP dong.'},
+      {idn:'OTW',zh:'在路上',ipa:'o-te-we',ex:'Gue OTW ya.'},
+      {idn:'gabut',zh:'无聊',ipa:'ga-but',ex:'Lagi gabut nih.'},
+      {idn:'curhat',zh:'倾诉',ipa:'cur-hat (c=ch)',ex:'Gue mau curhat.'},
+      {idn:'healing',zh:'疗愈旅行',ipa:'hi-ling',ex:'Butuh healing ke Bali.'},
+      {idn:'spill',zh:'爆料',ipa:'spil',ex:'Spill dong ceritanya.'},
+    ]
+  }
+};
+
+let currentWord = null;
+let state = {
+  dict: localStorage.getItem('tw_dict') || 'life',
+  queue: [],
+  seen: 0
+};
+let progress = JSON.parse(localStorage.getItem('typewords_v3') || '{}');
+let audioCtx = null;
+let voiceGender = localStorage.getItem('tw_voice_gender') || 'female';
+let speakToken = 0;
+let currentAudio = null;
+
+const MS_VOICES = {
+  female: { edge: 'GadisNeural', label: 'Gadis', patterns: [/gadis/i, /female/i] },
+  male: { edge: 'ArdiNeural', label: 'Ardi', patterns: [/ardi/i, /male/i] }
+};
+
+function voiceMatchesGender(voice, gender) {
+  if (!voice) return false;
+  const cfg = MS_VOICES[gender];
+  const opposite = gender === 'male' ? MS_VOICES.female : MS_VOICES.male;
+  if (opposite.patterns.some(p => p.test(voice.name))) return false;
+  return cfg.patterns.some(p => p.test(voice.name));
+}
+
+function escapeXml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function getIdVoices() {
+  if (!window.speechSynthesis) return [];
+  return speechSynthesis.getVoices().filter(v =>
+    v.lang.replace('_', '-').toLowerCase().startsWith('id')
+  );
+}
+
+function pickMsVoice(gender) {
+  const cfg = MS_VOICES[gender] || MS_VOICES.female;
+  const idVoices = getIdVoices();
+  const msVoices = idVoices.filter(v => /microsoft|natural|online|neural/i.test(v.name));
+  const pool = msVoices.length ? msVoices : idVoices;
+  for (const p of cfg.patterns) {
+    const found = pool.find(v => p.test(v.name));
+    if (found) return found;
+  }
+  return null;
+}
+
+function edgeVoiceFullName(gender) {
+  const cfg = MS_VOICES[gender] || MS_VOICES.female;
+  return `Microsoft Server Speech Text to Speech Voice (id-ID, ${cfg.edge})`;
+}
+
+function stopSpeaking() {
+  speakToken++;
+  speechSynthesis?.cancel();
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+}
+
+function setInputLocked(locked) {
+  const input = document.getElementById('input');
+  input.disabled = locked;
+  input.placeholder = locked ? '正在朗读，请听完再输入…' : 'ketik di sini...';
+  document.getElementById('speakIndicator').classList.toggle('hidden', !locked);
+}
+
+function updateVoiceUI() {
+  document.querySelectorAll('.voice-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.gender === voiceGender);
+  });
+  const cfg = MS_VOICES[voiceGender] || MS_VOICES.female;
+  const voice = pickMsVoice(voiceGender);
+  const local = voice ? voice.name : null;
+  const label = voiceGender === 'male' ? '男声 Ardi' : '女声 Gadis';
+  document.getElementById('voiceStatus').textContent = local
+    ? `当前语音：${local}`
+    : `当前语音：Microsoft ${cfg.label} (Neural 在线)`;
+  document.getElementById('headerVoiceLabel').textContent = `Microsoft TTS · ${label}`;
+}
+
+function speakWithWebSpeech(text, token, voice) {
+  return new Promise(resolve => {
+    if (!window.speechSynthesis || !voice) { resolve(false); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'id-ID';
+    u.voice = voice;
+    u.rate = 0.92;
+    u.onend = () => resolve(token === speakToken);
+    u.onerror = () => resolve(false);
+    speechSynthesis.speak(u);
+  });
+}
+
+function speakWithWebSpeechPitch(text, token) {
+  return new Promise(resolve => {
+    if (!window.speechSynthesis) { resolve(false); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'id-ID';
+    u.rate = 0.92;
+    u.pitch = voiceGender === 'female' ? 1.15 : 0.85;
+    u.onend = () => resolve(token === speakToken);
+    u.onerror = () => resolve(false);
+    speechSynthesis.speak(u);
+  });
+}
+
+async function speakWithEdgeTts(text, token) {
+  const voiceName = edgeVoiceFullName(voiceGender);
+  const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='id-ID'><voice name='${voiceName}'>${escapeXml(text)}</voice></speak>`;
+  const url = 'https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6A4';
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/ssml+xml',
+      'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
+    },
+    body: ssml
+  });
+  if (!resp.ok) throw new Error('edge tts failed');
+  const blob = await resp.blob();
+  if (token !== speakToken) return false;
+  return new Promise(resolve => {
+    const audio = new Audio(URL.createObjectURL(blob));
+    currentAudio = audio;
+    audio.onended = () => { currentAudio = null; resolve(token === speakToken); };
+    audio.onerror = () => { currentAudio = null; resolve(false); };
+    audio.play().catch(() => resolve(false));
+  });
+}
+
+async function msSpeak(text) {
+  const token = ++speakToken;
+  speechSynthesis?.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+
+  try {
+    if (await speakWithEdgeTts(text, token)) return true;
+  } catch (e) {}
+  if (token !== speakToken) return false;
+
+  const voice = pickMsVoice(voiceGender);
+  if (voice && voiceMatchesGender(voice, voiceGender)) {
+    if (await speakWithWebSpeech(text, token, voice)) return true;
+  }
+  if (token !== speakToken) return false;
+
+  return speakWithWebSpeechPitch(text, token);
+}
+
+async function speakCurrent() {
+  if (!currentWord) return;
+  setInputLocked(true);
+  await Promise.race([msSpeak(currentWord.idn), new Promise(r => setTimeout(r, 6000))]);
+  setInputLocked(false);
+  document.getElementById('input').focus();
+}
+
+function initVoices() {
+  updateVoiceUI();
+}
+
+function typeSound(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'triangle';
+    o.frequency.value = 600 + Math.random()*120;
+    g.gain.value = 0.015;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + 0.025);
+  }catch(e){}
+}
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+async function nextWord(){
+  stopSpeaking();
+  const dict = DICTS[state.dict];
+  if(state.queue.length===0){
+    state.queue = shuffle(dict.words);
+    state.seen = 0;
+  }
+  currentWord = state.queue.shift();
+  state.seen++;
+  document.getElementById('zh').textContent = currentWord.zh;
+  document.getElementById('ipa').textContent = currentWord.ipa;
+  document.getElementById('mask').textContent = currentWord.idn.replace(/[^\s]/g,'•').split('').join(' ');
+  document.getElementById('example').textContent = currentWord.ex;
+  const input = document.getElementById('input');
+  input.value = '';
+  input.classList.remove('border-green-500','border-red-500','border-white/10');
+  input.classList.add('border-white/10');
+  document.getElementById('idxNow').textContent = state.seen;
+  document.getElementById('idxTotal').textContent = dict.words.length;
+  document.getElementById('progressBar').style.width = Math.min(100, (state.seen / dict.words.length)*100) + '%';
+  updateStats();
+
+  setInputLocked(true);
+  const word = currentWord;
+  await Promise.race([msSpeak(word.idn), new Promise(r => setTimeout(r, 6000))]);
+  if (currentWord === word) {
+    setInputLocked(false);
+    input.focus();
+  }
+}
+
+function saveProgress(correct){
+  if(!progress[state.dict]) progress[state.dict]={};
+  if(!progress[state.dict][currentWord.idn]) progress[state.dict][currentWord.idn]={c:0,w:0};
+  if(correct) progress[state.dict][currentWord.idn].c++; else progress[state.dict][currentWord.idn].w++;
+  localStorage.setItem('typewords_v3', JSON.stringify(progress));
+}
+
+function updateStats(){
+  const dict = DICTS[state.dict];
+  const prog = progress[state.dict]||{};
+  let mastered=0, totalC=0, totalW=0;
+  dict.words.forEach(w=>{
+    const p = prog[w.idn];
+    if(p){ totalC+=p.c||0; totalW+=p.w||0; if((p.c||0)>=2) mastered++; }
+  });
+  const total = dict.words.length;
+  const acc = (totalC+totalW)>0 ? Math.round(totalC/(totalC+totalW)*100) : 0;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statMastered').textContent = mastered;
+  document.getElementById('statAcc').textContent = acc + '%';
+  document.getElementById('pctText').textContent = Math.round(mastered/total*100) + '%';
+  document.getElementById('pctBar').style.width = (mastered/total*100) + '%';
+}
+
+function checkAnswer(){
+  const input = document.getElementById('input');
+  const val = input.value.trim().toLowerCase();
+  const target = currentWord.idn.toLowerCase();
+  if(!val) return;
+  const correct = val === target;
+  saveProgress(correct);
+  if(correct){
+    input.classList.remove('border-white/10','border-red-500');
+    input.classList.add('border-green-500');
+    input.disabled = true;
+    setTimeout(()=>{ input.disabled=false; nextWord(); }, 650);
+  }else{
+    input.classList.remove('border-white/10');
+    input.classList.add('border-red-500');
+    input.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:180});
+    setTimeout(()=>{ input.classList.remove('border-red-500'); input.classList.add('border-white/10'); }, 800);
+  }
+  updateStats();
+}
+
+function initTabs(){
+  document.querySelectorAll('.dict-tab').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.dict-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.dict = btn.dataset.dict;
+      localStorage.setItem('tw_dict', state.dict);
+      state.queue = [];
+      document.getElementById('modeTag').textContent = DICTS[state.dict].name;
+      nextWord();
+    };
+    if(btn.dataset.dict===state.dict) btn.classList.add('active');
+  });
+  document.getElementById('modeTag').textContent = DICTS[state.dict].name;
+}
+
+document.getElementById('input').addEventListener('keydown', e=>{
+  if(e.key !== 'Enter' && e.key !== 'Tab' && e.key.length===1) typeSound();
+  if(e.key === 'Enter'){ e.preventDefault(); checkAnswer(); }
+});
+document.getElementById('input').addEventListener('input', ()=>{
+  const v = document.getElementById('input').value.trim().toLowerCase();
+  if(v === currentWord?.idn.toLowerCase()) checkAnswer();
+});
+document.getElementById('speakBtn').onclick = speakCurrent;
+document.getElementById('skipBtn').onclick = nextWord;
+document.getElementById('hintBtn').onclick = ()=>{
+  const input = document.getElementById('input');
+  const reveal = Math.ceil(currentWord.idn.length * 0.4);
+  input.value = currentWord.idn.slice(0, reveal);
+  input.focus();
+  typeSound();
+};
+document.getElementById('resetBtn').onclick = ()=>{
+  if(confirm('重置所有学习进度？')){
+    localStorage.removeItem('typewords_v3');
+    progress = {};
+    state.queue = [];
+    nextWord();
+  }
+};
+
+document.querySelectorAll('.voice-btn').forEach(btn => {
+  btn.onclick = () => {
+    voiceGender = btn.dataset.gender;
+    localStorage.setItem('tw_voice_gender', voiceGender);
+    updateVoiceUI();
+    if (currentWord) speakCurrent();
+  };
+});
+
+if (window.speechSynthesis) {
+  speechSynthesis.onvoiceschanged = initVoices;
+  initVoices();
+} else {
+  document.getElementById('voiceStatus').textContent = '当前语音：Microsoft Edge TTS (Neural)';
+}
+
+initTabs();
+updateVoiceUI();
+nextWord();
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
