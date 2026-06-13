@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词工作台 - TypeWords ID</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{background:#0a0f1d; color:#e5e7eb}
+  .tap{transition:transform .08s ease} .tap:active{transform:scale(.97)}
+  .sidebar-item.active{background:rgba(255,255,255,0.06); color:#fff; font-weight:600;}
+</style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+<div class="fixed inset-0 -z-10 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,.15),transparent)]"></div>
+</div>
+
+<div class="flex-1 flex w-full">
+  <aside class="w-64 border-r border-white/5 bg-[#090e1a] p-4 flex flex-col justify-between hidden md:flex">
+    <div class="space-y-6">
+      <a href="index.html" class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 italic px-3 block">TypeWords ID</a>
+      <nav class="space-y-1">
+        <a href="dashboard.html" class="sidebar-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition">📂 单词工作台</a>
+        <a href="typing.html" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:bg-white/5 transition">⌨️ 开始键盘打字</a>
+      </nav>
+    </div>
+    <div class="px-3 py-2 text-xs text-white/30 border-t border-white/5 pt-4">本地浏览器安全同步</div>
+  </aside>
+
+  <main class="flex-1 p-6 md:p-8 space-y-6 max-w-6xl mx-auto w-full">
+    <header class="flex items-center justify-between pb-4 border-b border-white/5">
+      <span class="font-bold text-cyan-400 italic md:hidden">TypeWords ID</span>
+      <button id="resetBtn" class="ml-auto px-2.5 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-xs transition tap">清空进度</button>
+    </header>
+
+    <div class="rounded-2xl border border-white/10 bg-[#111827] p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
+      <div class="space-y-3 flex-1">
+        <div class="flex items-center gap-3"><span class="text-2xl">💾</span><h3 id="panelDictName" class="text-2xl font-bold text-white">---</h3></div>
+        <div class="text-xs text-emerald-400">● 进度交换状态：本地浏览器离线安全同步</div>
+        <div class="pt-2">
+          <div class="flex justify-between text-xs text-white/40 mb-1">
+            <span>当前进度：已学 <span id="panelPctText">0%</span></span>
+            <span><span id="panelMasteredCount">0</span> / <span id="panelTotalCount">0</span> 词</span>
+          </div>
+          <div class="w-full md:w-80 h-1.5 bg-white/5 rounded-full overflow-hidden">
+            <div id="panelProgressBar" class="h-full w-0 bg-gradient-to-r from-violet-500 to-cyan-400 transition-all duration-300"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-row md:flex-col items-center gap-4">
+        <div class="flex gap-2">
+          <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-center min-w-[70px]">
+            <div id="cardMastered" class="text-xl font-bold text-emerald-400">0</div>
+            <div class="text-[10px] text-white/40">已掌握词汇</div>
+          </div>
+          <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-center min-w-[70px]">
+            <div id="cardWrong" class="text-xl font-bold text-rose-400">0</div>
+            <div class="text-[10px] text-white/40">曾敲错词汇</div>
+          </div>
+        </div>
+        <a href="typing.html" class="tap w-full md:w-auto px-6 py-3 rounded-xl bg-[#eab308] hover:bg-[#ca8a04] text-black font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-yellow-500/10">
+          继续听写练习 ➔
+        </a>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h4 class="text-sm font-semibold text-white/50 tracking-wider">数据总览</h4>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="rounded-xl border border-white/5 bg-[#0f1524] p-5 text-center"><div class="text-3xl font-semibold text-cyan-400">0</div><div class="text-xs text-white/40 mt-1">今日时长(分)</div></div>
+        <div class="rounded-xl border border-white/5 bg-[#0f1524] p-5 text-center"><div class="text-3xl font-semibold text-violet-400">1</div><div class="text-xs text-white/40 mt-1">连续打卡(天)</div></div>
+        <div class="rounded-xl border border-white/5 bg-[#0f1524] p-5 text-center"><div class="text-3xl font-semibold text-blue-400">0</div><div class="text-xs text-white/40 mt-1">总计练习(分)</div></div>
+        <div class="rounded-xl border border-white/5 bg-[#0f1524] p-4 flex flex-col justify-between">
+          <div class="text-[11px] text-white/40">近 7 日打卡记录</div>
+          <div class="flex justify-between items-center text-xs text-center mt-2" id="calendarDays"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h4 class="text-sm font-semibold text-white/50 tracking-wider">子词库学成状态</h4>
+      <div id="dictSelectorGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const DICT_METADATA = {
+  life: { name: '生活用语30词', desc: 'Daily Survival', count: 30 },
+  numbers: { name: '数字时间25词', desc: 'Numbers & Time', count: 25 },
+  jakarta: { name: '雅加达本地25词', desc: 'Jakarta Lokal', count: 8 },
+  slang: { name: '社交俚语20词', desc: 'Gaul & Slang', count: 4 }
+};
+
+let activeDictKey = localStorage.getItem('tw_dict') || 'life';
+let progress = JSON.parse(localStorage.getItem('typewords_v3') || '{}');
+
+function renderWorkspace() {
+  const meta = DICT_METADATA[activeDictKey];
+  document.getElementById('panelDictName').textContent = meta.name;
+  
+  let globalMastered = 0, globalWrong = 0;
+  Object.keys(DICT_METADATA).forEach(k => {
+    const p = progress[k] || {};
+    Object.keys(p).forEach(w => {
+      if(p[w].c >= 2) globalMastered++;
+      if(p[w].w > 0) globalWrong++;
+    });
+  });
+
+  let curMastered = 0;
+  const curProg = progress[activeDictKey] || {};
+  Object.keys(curProg).forEach(w => { if(curProg[w].c >= 2) curMastered++; });
+
+  const pct = Math.round((curMastered / meta.count) * 100) || 0;
+  document.getElementById('panelPctText').textContent = pct + '%';
+  document.getElementById('panelMasteredCount').textContent = curMastered;
+  document.getElementById('panelTotalCount').textContent = meta.count;
+  document.getElementById('panelProgressBar').style.width = pct + '%';
+  document.getElementById('cardMastered').textContent = globalMastered;
+  document.getElementById('cardWrong').textContent = globalWrong;
+
+  const grid = document.getElementById('dictSelectorGrid');
+  grid.innerHTML = '';
+  Object.keys(DICT_METADATA).forEach(k => {
+    const m = DICT_METADATA[k];
+    let mCount = 0;
+    Object.keys(progress[k] || {}).forEach(w => { if((progress[k][w].c||0) >= 2) mCount++; });
+
+    const btn = document.createElement('button');
+    btn.className = `w-full text-left p-3.5 rounded-xl border transition tap flex items-center justify-between ${k === activeDictKey ? 'bg-white/[0.04] border-indigo-500/50' : 'bg-[#0f1524] border-white/5 hover:bg-white/[0.02]'}`;
+    btn.innerHTML = `<div><div class="text-sm font-semibold text-white/90">${m.name}</div><div class="text-xs text-white/40 mt-0.5">${m.desc}</div></div><div class="text-xs font-mono px-2.5 py-1 rounded bg-white/5 text-white/60">已掌握 ${mCount} / ${m.count}</div>`;
+    btn.onclick = () => {
+      activeDictKey = k;
+      localStorage.setItem('tw_dict', k);
+      renderWorkspace();
+    };
+    grid.appendChild(btn);
+  });
+}
+
+const cal = document.getElementById('calendarDays');
+const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+const curDay = new Date().getDay();
+for(let i=0; i<7; i++){
+  cal.innerHTML += `<div class="flex flex-col items-center gap-1"><span class="text-[10px] text-white/30">${weekDays[i]}</span><span class="w-6 h-6 rounded-full flex items-center justify-center text-[11px] ${i===curDay?'bg-blue-600 text-white font-bold':'text-white/50 bg-white/[0.02]'}">${7+i}</span></div>`;
+}
+
+document.getElementById('resetBtn').onclick = () => {
+  if(confirm('重置所有进度？')) { localStorage.removeItem('typewords_v3'); progress={}; renderWorkspace(); }
+};
+
+renderWorkspace();
+</script>
+</body>
+</html>
