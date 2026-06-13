@@ -35,10 +35,10 @@
       </div>
     </div>
     <div class="flex items-center gap-2 text-xs">
-      <a href="dashboard.html" class="px-2.5 py-1.5 rounded-lg bg-violet-600/20 hover:bg-violet-600/40 border border-violet-500/30 tap text-violet-300 font-medium flex items-center gap-1">
+      <a href="index.html" class="px-3 py-1.5 rounded-lg bg-violet-600/20 hover:bg-violet-600/30 border border-violet-500/30 font-medium text-violet-300 tap flex items-center gap-1">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>返回工作台
       </a>
-      <button id="resetBtn" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 tap text-white/70">重置进度</button>
+      <button id="resetBtn" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 tap text-white/70">重置</button>
     </div>
   </div>
 </header>
@@ -50,7 +50,6 @@
       <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-violet-500/50">
         <div class="text-[11px] text-white/50">DICT 1</div>
         <div class="font-medium">生活用语30词</div>
-        <div class="text-xs text-white/40 mt-0.5">Daily Survival</div>
       </div>
     </button>
     <button data-dict="numbers" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
@@ -58,7 +57,6 @@
       <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-cyan-500/50">
         <div class="text-[11px] text-white/50">DICT 2</div>
         <div class="font-medium">数字时间25词</div>
-        <div class="text-xs text-white/40 mt-0.5">Numbers & Time</div>
       </div>
     </button>
     <button data-dict="jakarta" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
@@ -66,7 +64,6 @@
       <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-amber-500/50">
         <div class="text-[11px] text-white/50">DICT 3</div>
         <div class="font-medium">雅加达本地25词</div>
-        <div class="text-xs text-white/40 mt-0.5">Jakarta Lokal</div>
       </div>
     </button>
     <button data-dict="slang" class="dict-tab group relative overflow-hidden rounded-2xl p-[1px] tap">
@@ -74,7 +71,6 @@
       <div class="relative bg-[#0f1629] border border-white/10 rounded-2xl px-4 py-3 group-[.active]:border-fuchsia-500/50">
         <div class="text-[11px] text-white/50">DICT 4</div>
         <div class="font-medium">社交俚语20词</div>
-        <div class="text-xs text-white/40 mt-0.5">Gaul & Slang</div>
       </div>
     </button>
   </div>
@@ -111,17 +107,15 @@
             <input id="input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
               class="w-full text-center text-2xl md:text-[28px] py-4 md:py-5 rounded-2xl bg-[#060a14] border-2 border-white/10 focus:border-violet-500/60 outline-none transition placeholder:text-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,.03)]"
               placeholder="ketik di sini...">
-            <div class="pointer-events-none absolute inset-0 rounded-2xl ring-0 focus-within:ring-2 ring-violet-500/20 transition"></div>
           </div>
           <div class="flex items-center justify-center gap-2 mt-3">
-            <button id="speakBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm flex items-center gap-1.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>朗读</button>
-            <button id="hintBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm">提示</button>
-            <button id="skipBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm text-white/70">跳过 ↵</button>
+            <button id="speakBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm flex items-center gap-1.5">朗读</button>
+            <button id="hintBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm">提示</button>
+            <button id="skipBtn" class="tap px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70">跳过 ↵</button>
           </div>
         </div>
 
         <div class="mt-8 text-center">
-          <div class="text-[11px] uppercase tracking-widest text-white/40 mb-1">Contoh 例句</div>
           <div id="example" class="text-lg md:text-xl text-white/70 italic">Terima kasih banyak.</div>
         </div>
       </div>
@@ -129,58 +123,36 @@
 
     <div class="space-y-4">
       <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
-        <div class="flex items-center justify-between mb-3">
-          <div class="font-medium">学习仪表盘</div>
-          <div class="text-xs text-white/50">本地保存</div>
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
-            <div class="text-[11px] text-white/50">总词数</div>
-            <div id="statTotal" class="text-2xl font-semibold mt-1">0</div>
+        <div class="font-medium text-sm mb-3">当前词库状态</div>
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="bg-white/[0.02] p-2 rounded-lg">
+            <div class="text-white/40Scale text-[10px]">总词数</div>
+            <div id="statTotal" class="text-lg font-bold mt-0.5">0</div>
           </div>
-          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
-            <div class="text-[11px] text-white/50">已掌握</div>
-            <div id="statMastered" class="text-2xl font-semibold mt-1 text-emerald-400">0</div>
+          <div class="bg-white/[0.02] p-2 rounded-lg">
+            <div class="text-white/40Scale text-[10px]">已掌握</div>
+            <div id="statMastered" class="text-lg font-bold text-emerald-400 mt-0.5">0</div>
           </div>
-          <div class="rounded-xl bg-white/[0.03] border border-white/5 p-3">
-            <div class="text-[11px] text-white/50">准确率</div>
-            <div id="statAcc" class="text-2xl font-semibold mt-1">0%</div>
+          <div class="bg-white/[0.02] p-2 rounded-lg">
+            <div class="text-white/40Scale text-[10px]">准确率</div>
+            <div id="statAcc" class="text-lg font-bold mt-0.5">0%</div>
           </div>
-        </div>
-        <div class="mt-4">
-          <div class="flex justify-between text-[11px] text-white/50 mb-1.5"><span>本词典进度</span><span id="pctText">0%</span></div>
-          <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div id="pctBar" class="h-full w-0 bg-gradient-to-r from-violet-500 to-cyan-400"></div></div>
         </div>
       </div>
 
-      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
-        <div class="font-medium mb-2">使用技巧</div>
-        <ul class="text-sm text-white/60 space-y-1.5 list-disc pl-4">
-          <li>先听朗读，听完再拼写，强化听-写链接</li>
-          <li>印尼语基本按拼写读，c 读 ch，j 读 j</li>
-          <li>按 Enter 提交，输错会抖动提示</li>
-          <li>掌握标准：连续答对 2 次即标记掌握</li>
-          <li>数据会自动与主工作台实时打通同步</li>
-        </ul>
-      </div>
-
-      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5">
-        <div class="flex items-center justify-between">
-          <div class="font-medium">声音设置</div>
-          <div class="text-xs text-white/50">Microsoft TTS</div>
+      <div class="rounded-[24px] border border-white/10 bg-[#0f1629] p-5 text-xs text-white/50">
+        <div class="text-white font-medium mb-2">声音设置</div>
+        <div class="flex gap-2 mb-2">
+          <button id="voiceFemale" data-gender="female" class="voice-btn tap flex-1 py-1.5 bg-white/5 border border-white/10 rounded-md">女声 Gadis</button>
+          <button id="voiceMale" data-gender="male" class="voice-btn tap flex-1 py-1.5 bg-white/5 border border-white/10 rounded-md">男声 Ardi</button>
         </div>
-        <div class="mt-3 flex items-center gap-2 text-sm">
-          <button id="voiceFemale" data-gender="female" class="voice-btn tap flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">女声 Gadis</button>
-          <button id="voiceMale" data-gender="male" class="voice-btn tap flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">男声 Ardi</button>
-        </div>
-        <div id="voiceStatus" class="mt-2.5 text-xs text-white/50">当前语音：加载中…</div>
+        <div id="voiceStatus">当前语音：加载中…</div>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-// --- 核心打字练习核心配置与词库 ---
 const DICTS = {
   life: {
     name: '生活用语30词',
@@ -244,7 +216,7 @@ const DICTS = {
       {idn:'besok',zh:'明天',ipa:'be-sok',ex:'Besok kita pergi.'},
       {idn:'kemarin',zh:'昨天',ipa:'ke-ma-rin',ex:'Kemarin hujan.'},
       {idn:'pagi',zh:'早上',ipa:'pa-gi',ex:'Pagi-pagi sekali.'},
-      {idn:'malam',zh:'晚上',ipa:'ma-lam',ex:'Selamat malam.'},
+      {idn:'malam',zh:'晚上',ipa:'malam',ex:'Selamat malam.'},
     ]
   },
   jakarta: {
@@ -316,7 +288,7 @@ let voiceGender = localStorage.getItem('tw_voice_gender') || 'female';
 let speakToken = 0;
 let currentAudio = null;
 
-// --- 💻 新增高级数据分析组件：统计练习时间 & 每日打卡机制 💻 ---
+// 每秒自动在本地静默更新练习时间
 setInterval(() => {
   let totalMin = parseFloat(localStorage.getItem('tw_total_duration') || '0');
   let todayMin = parseFloat(localStorage.getItem('tw_today_duration') || '0');
@@ -326,8 +298,6 @@ setInterval(() => {
   if(lastDate !== todayStr) {
     todayMin = 0;
     localStorage.setItem('tw_last_active_date', todayStr);
-    
-    // 计算连续打卡天数
     let streak = parseInt(localStorage.getItem('tw_streak_days') || '0');
     let history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]');
     if (!history.includes(todayStr)) {
@@ -494,7 +464,6 @@ function saveProgress(correct){
   if(correct) progress[state.dict][currentWord.idn].c++; else progress[state.dict][currentWord.idn].w++;
   localStorage.setItem('typewords_v3', JSON.stringify(progress));
   
-  // 激活今日有单词练习
   let todayStr = new Date().toISOString().slice(0, 10);
   let history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]');
   if (!history.includes(todayStr)) {
@@ -516,8 +485,6 @@ function updateStats(){
   document.getElementById('statTotal').textContent = total;
   document.getElementById('statMastered').textContent = mastered;
   document.getElementById('statAcc').textContent = acc + '%';
-  document.getElementById('pctText').textContent = Math.round(mastered/total*100) + '%';
-  document.getElementById('pctBar').style.width = (mastered/total*100) + '%';
 }
 
 function checkAnswer(){
