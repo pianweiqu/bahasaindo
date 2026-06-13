@@ -1,213 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypeWords ID - 印尼语学习工作台</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { font-family: 'Inter', system-ui, sans-serif; }
-        body { background: #050810; color: #e5e7eb; }
-        .glass { background: rgba(15, 22, 41, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-        .card-bg { background: #0f1629; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .tap { transition: transform 0.08s ease; } .tap:active { transform: scale(0.97); }
-        .day-num.active { border: 2px solid #3b82f6; color: #3b82f6; font-weight: 600; background: rgba(59, 130, 246, 0.15); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeWords ID v3 - 印尼语生存词典</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+  .mono{font-family:'JetBrains Mono',monospace}
+  body{background:#0a0f1d; color:#e5e7eb}
+  .tap{transition:transform .08s ease} .tap:active{transform:scale(.97)}
+</style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,0.15),transparent),radial-gradient(600px_300px_at_90%_20%,rgba(6,182,212,0.1),transparent)]"></div>
+<div class="fixed inset-0 -z-10 overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,.25),transparent),radial-gradient(600px_300px_at_90%_20%,rgba(6,182,212,.15),transparent)]"></div>
+</div>
+
+<!-- 官方大气大封面 (image_0a27a8.jpg) -->
+<div class="max-w-6xl mx-auto px-6 py-12 md:py-24 flex-1 flex flex-col justify-center w-full">
+  <div class="grid md:grid-cols-[1.2fr_.8fr] gap-12 items-center">
+    <!-- 左侧介绍 -->
+    <div class="space-y-6">
+      <h1 class="text-6xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 italic" style="font-family: serif;">
+        Type Words
+      </h1>
+      <p class="text-lg text-white/40 mono select-none">🌐 https://bahasaindo.id</p>
+      <h2 class="text-2xl md:text-3xl font-semibold text-white/90 tracking-wide leading-snug">
+        打字记单词，科学间隔复习，<br>一次敲击，一点进步
+      </h2>
+      
+      <!-- 标签特性 -->
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">⌨️ 完全免费 · 无需注册</span>
+        <span class="px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">💻 键盘流设计</span>
+        <span class="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">🧠 FSRS 记忆曲线</span>
+      </div>
+      
+      <div class="text-sm text-white/50 space-y-1.5 pl-1">
+        <div>✦ 打开即用，无需注册</div>
+        <div>✦ 数据本地存储，隐私安全</div>
+        <div>✦ 开源可审查，永久免费</div>
+      </div>
+
+      <!-- 按钮群 -->
+      <div class="pt-4 flex flex-wrap items-center gap-4">
+        <a href="dashboard.html" class="tap inline-block px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium text-center shadow-lg shadow-indigo-500/20 text-lg">
+          立即开始练习
+        </a>
+        <button class="tap px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 font-medium text-lg">
+          查看源码
+        </button>
+      </div>
     </div>
 
-    <nav class="w-full md:w-60 bg-[#090d1a] border-b md:border-b-0 md:border-r border-white/5 flex flex-col justify-between p-5 shrink-0">
-        <div>
-            <div class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400 mb-8 px-2 italic">TypeWords ID</div>
-            <ul class="space-y-1">
-                <li><a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 text-white font-medium"><i class="fa-solid fa-font text-violet-400 w-5 text-center"></i> 单词工作台</a></li>
-                <li><a href="index1.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/[0.03] transition"><i class="fa-solid fa-keyboard w-5 text-center"></i> 开始键盘打字</a></li>
-            </ul>
+    <!-- 右侧高级预览卡片 -->
+    <div class="relative group">
+      <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600 to-cyan-500 opacity-20 blur-xl"></div>
+      <div class="relative rounded-2xl border border-white/10 bg-[#0d1527] p-6 shadow-2xl">
+        <div class="flex items-center gap-1.5 mb-6">
+          <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+          <span class="text-xs text-white/30 ml-2 mono">TypeWords - 单词练习</span>
         </div>
-        <div class="hidden md:block text-xs text-white/30 px-4">印尼语生存词典项目 v3</div>
-    </nav>
-
-    <main class="flex-grow p-4 md:p-8 max-w-5xl mx-auto w-full overflow-y-auto">
-        
-        <div class="card-bg rounded-[24px] p-6 md:p-8 flex flex-col md:flex-row justify-between gap-6 mb-6 relative overflow-hidden">
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 blur-[60px] rounded-full"></div>
-            
-            <div class="flex-grow md:max-w-[60%] flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-book-bookmark"></i></div>
-                        <h2 id="currentDictName" class="text-xl md:text-2xl font-bold">生活用语30词</h2>
-                    </div>
-                    <div class="text-xs text-white/40 mb-4 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 进度交换状态：本地浏览器离线安全同步</div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="w-full h-2.5 bg-white/5 rounded-full overflow-hidden mb-2">
-                        <div id="mainProgressBar" class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between text-xs text-white/50 font-medium">
-                        <span id="mainProgressPct">当前进度：已学 0%</span>
-                        <span id="mainProgressRatio" class="mono">0 / 30 词</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col justify-between items-stretch md:items-end gap-5 min-w-[240px]">
-                <div class="grid grid-cols-2 gap-3 w-full">
-                    <div class="border border-white/5 bg-white/[0.02] rounded-16 p-3 text-center rounded-xl">
-                        <div id="boxMasteredCount" class="text-2xl font-bold text-emerald-400 mono">0</div>
-                        <div class="text-[11px] text-white/40 mt-0.5">已掌握词汇</div>
-                    </div>
-                    <div class="border border-white/5 bg-white/[0.02] rounded-16 p-3 text-center rounded-xl">
-                        <div id="boxWrongCount" class="text-2xl font-bold text-amber-500 mono">0</div>
-                        <div class="text-[11px] text-white/40 mt-0.5">曾敲错词汇</div>
-                    </div>
-                </div>
-                <a href="index1.html" class="tap w-full py-3 px-6 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10 hover:brightness-110">
-                    继续拼写练习 <i class="fa-solid fa-circle-arrow-right"></i>
-                </a>
-            </div>
+        <div class="text-center py-6">
+          <div class="text-xs text-cyan-400/70 mono">/te.ri.ma ka.sih/</div>
+          <div class="text-3xl font-semibold text-white/90 mt-2 tracking-wide font-mono">terima kasih</div>
+          <div class="text-sm text-white/40 mt-2">v. 谢谢，表达感激</div>
+          <div class="mt-8 pt-6 border-t border-white/5 text-left space-y-2">
+            <div class="text-xs text-white/30 tracking-wider">例句</div>
+            <div class="text-sm text-white/70 italic">1. Terima kasih banyak.</div>
+            <div class="text-xs text-white/40">非常感谢。</div>
+          </div>
+          <div class="mt-8 text-xs text-indigo-400 animate-pulse">点击左侧按钮或按任意键进入后台控制台 ➔</div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <h3 class="text-base font-semibold text-white/80 mb-3 px-1">数据总览</h3>
-        <div class="card-bg rounded-[24px] p-6 grid md:grid-cols-[1fr_auto] gap-6 mb-8">
-            <div class="grid grid-cols-3 gap-3">
-                <div class="border border-white/5 bg-white/[0.01] p-4 rounded-xl text-center flex flex-col justify-center">
-                    <div id="statTodayMin" class="text-2xl font-bold text-blue-400 mono">0</div>
-                    <div class="text-xs text-white/40 mt-1">今日时长(分)</div>
-                </div>
-                <div class="border border-white/5 bg-white/[0.01] p-4 rounded-xl text-center flex flex-col justify-center">
-                    <div id="statStreakDays" class="text-2xl font-bold text-violet-400 mono">0</div>
-                    <div class="text-xs text-white/40 mt-1">连续打卡(天)</div>
-                </div>
-                <div class="border border-white/5 bg-white/[0.01] p-4 rounded-xl text-center flex flex-col justify-center">
-                    <div id="statTotalMin" class="text-2xl font-bold text-cyan-400 mono">0</div>
-                    <div class="text-xs text-white/40 mt-1">总计练习(分)</div>
-                </div>
-            </div>
+<footer class="py-4 text-center text-[11px] text-white/20 border-t border-white/5">
+  © 2026 TypeWords ID. Powered by GitHub Pages.
+</footer>
 
-            <div class="md:pl-6 md:border-l border-white/5 min-w-[280px]">
-                <div class="text-xs text-white/40 mb-3 font-medium">近 7 日打卡记录</div>
-                <div id="weekDaysContainer" class="flex justify-between gap-2"></div>
-            </div>
-        </div>
-
-        <h3 class="text-base font-semibold text-white/80 mb-3 px-1">子词库学成状态</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="card-bg rounded-2xl p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-medium text-sm">生活用语30词</div>
-                    <div class="text-xs text-white/40 mt-0.5">Daily Survival</div>
-                </div>
-                <div id="card-life" class="text-xs mono bg-white/5 px-2.5 py-1 rounded-md text-white/70">已掌握 0 / 30</div>
-            </div>
-            <div class="card-bg rounded-2xl p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-medium text-sm">数字时间25词</div>
-                    <div class="text-xs text-white/40 mt-0.5">Numbers & Time</div>
-                </div>
-                <div id="card-numbers" class="text-xs mono bg-white/5 px-2.5 py-1 rounded-md text-white/70">已掌握 0 / 25</div>
-            </div>
-            <div class="card-bg rounded-2xl p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-medium text-sm">雅加达本地25词</div>
-                    <div class="text-xs text-white/40 mt-0.5">Jakarta Lokal</div>
-                </div>
-                <div id="card-jakarta" class="text-xs mono bg-white/5 px-2.5 py-1 rounded-md text-white/70">已掌握 0 / 25</div>
-            </div>
-            <div class="card-bg rounded-2xl p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-medium text-sm">社交俚语20词</div>
-                    <div class="text-xs text-white/40 mt-0.5">Gaul & Slang</div>
-                </div>
-                <div id="card-slang" class="text-xs mono bg-white/5 px-2.5 py-1 rounded-md text-white/70">已掌握 0 / 20</div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        const DICT_SIZES = { life: 30, numbers: 25, jakarta: 25, slang: 20 };
-        const DICT_NAMES = { life: '生活用语30词', numbers: '数字时间25词', jakarta: '雅加达本地25词', slang: '社交俚语20词' };
-
-        function loadDashboardData() {
-            let currentDict = localStorage.getItem('tw_dict') || 'life';
-            document.getElementById('currentDictName').textContent = DICT_NAMES[currentDict] || '印尼语生存词典';
-
-            let progress = {};
-            try { progress = JSON.parse(localStorage.getItem('typewords_v3') || '{}'); } catch(e){}
-
-            let totalMastered = 0;
-            let totalWrong = 0;
-            let currentDictMastered = 0;
-
-            for (let key in DICT_SIZES) {
-                let dictProg = progress[key] || {};
-                let masteredCount = 0;
-                for (let word in dictProg) {
-                    if (dictProg[word].c >= 2) masteredCount++;
-                    if (dictProg[word].w > 0) totalWrong++;
-                }
-                totalMastered += masteredCount;
-                if (key === currentDict) currentDictMastered = masteredCount;
-                
-                let cardEl = document.getElementById('card-' + key);
-                if (cardEl) cardEl.textContent = `已掌握 ${masteredCount} / ${DICT_SIZES[key]}`;
-            }
-
-            document.getElementById('boxMasteredCount').textContent = totalMastered;
-            document.getElementById('boxWrongCount').textContent = totalWrong;
-
-            let currentSize = DICT_SIZES[currentDict] || 30;
-            let pct = Math.round((currentDictMastered / currentSize) * 100);
-            document.getElementById('mainProgressBar').style.width = pct + '%';
-            document.getElementById('mainProgressPct').textContent = `当前进度：已学 ${pct}%`;
-            document.getElementById('mainProgressRatio').textContent = `${currentDictMastered} / ${currentSize} 词`;
-
-            let todayMin = Math.round(parseFloat(localStorage.getItem('tw_today_duration') || '0'));
-            let totalMin = Math.round(parseFloat(localStorage.getItem('tw_total_duration') || '0'));
-            let streakDays = parseInt(localStorage.getItem('tw_streak_days') || '0');
-
-            document.getElementById('statTodayMin').textContent = todayMin;
-            document.getElementById('statTotalMin').textContent = totalMin;
-            document.getElementById('statStreakDays').textContent = streakDays || (localStorage.getItem('tw_history_dates') ? JSON.parse(localStorage.getItem('tw_history_dates')).length : 0);
-
-            renderWeekCalendar();
-        }
-
-        function renderWeekCalendar() {
-            let history = [];
-            try { history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]'); } catch(e){}
-            let container = document.getElementById('weekDaysContainer');
-            container.innerHTML = '';
-
-            const weekLabels = ['日', '一', '二', '三', '四', '五', '六'];
-            let today = new Date();
-
-            for (let i = 6; i >= 0; i--) {
-                let d = new Date();
-                d.setDate(today.getDate() - i);
-                let dateStr = d.toISOString().slice(0, 10);
-                let isMasteredToday = history.includes(dateStr);
-                
-                let col = document.createElement('div');
-                col.className = 'flex flex-col items-center gap-1.5 flex-1';
-                col.innerHTML = `
-                    <span class="text-[11px] text-white/40">${weekLabels[d.getDay()]}</span>
-                    <span class="w-8 h-8 rounded-full flex items-center justify-center text-xs border ${isMasteredToday ? 'border-blue-500 text-blue-400 bg-blue-500/10 font-bold' : 'border-white/5 text-white/30'}">${d.getDate()}</span>
-                `;
-                container.appendChild(col);
-            }
-        }
-
-        window.onload = loadDashboardData;
-    </script>
+<script>
+  // 首页按任意键直接跳到工作台
+  document.addEventListener('keydown', (e) => {
+    if(e.key !== 'Escape') window.location.href = 'dashboard.html';
+  });
+</script>
 </body>
 </html>
