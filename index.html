@@ -11,7 +11,9 @@
 <style>
   *{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
   .mono{font-family:'JetBrains Mono',monospace}
-  body{background:#0a0f1d; color:#e5e7eb}
+  body{background:#050810; color:#e5e7eb}
+  ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#1f2937;border-radius:3px}
+  .glass{background:rgba(15,22,41,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
   .tap{transition:transform .08s ease} .tap:active{transform:scale(.97)}
 </style>
 </head>
@@ -21,10 +23,27 @@
   <div class="absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_-10%,rgba(99,102,241,.25),transparent),radial-gradient(600px_300px_at_90%_20%,rgba(6,182,212,.15),transparent)]"></div>
 </div>
 
-<!-- 官方大气大封面 (image_0a27a8.jpg) -->
-<div class="max-w-6xl mx-auto px-6 py-12 md:py-24 flex-1 flex flex-col justify-center w-full">
+<header class="sticky top-0 z-40 glass border-b border-white/5">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center font-bold text-black">ID</div>
+      <div>
+        <div class="font-semibold leading-tight">TypeWords ID v3</div>
+        <div class="text-xs text-white/50 -mt-0.5">印尼语生存词典 · 独立大首页</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 text-xs">
+      <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-white/70">Edge TTS Online</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-12 md:py-20 w-full space-y-24">
+  
   <div class="grid md:grid-cols-[1.2fr_.8fr] gap-12 items-center">
-    <!-- 左侧介绍 -->
     <div class="space-y-6">
       <h1 class="text-6xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 italic" style="font-family: serif;">
         Type Words
@@ -34,7 +53,6 @@
         打字记单词，科学间隔复习，<br>一次敲击，一点进步
       </h2>
       
-      <!-- 标签特性 -->
       <div class="flex flex-wrap gap-2 text-xs">
         <span class="px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">⌨️ 完全免费 · 无需注册</span>
         <span class="px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">💻 键盘流设计</span>
@@ -47,18 +65,16 @@
         <div>✦ 开源可审查，永久免费</div>
       </div>
 
-      <!-- 按钮群 -->
-      <div class="pt-4 flex flex-wrap items-center gap-4">
-        <a href="dashboard.html" class="tap inline-block px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium text-center shadow-lg shadow-indigo-500/20 text-lg">
+      <div class="pt-4 flex items-center gap-4">
+        <a href="dashboard.html" class="tap inline-block px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium text-center shadow-lg shadow-indigo-500/20 text-lg transition">
           立即开始练习
         </a>
-        <button class="tap px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 font-medium text-lg">
+        <a href="https://github.com" target="_blank" class="tap px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/80 font-medium text-lg text-center transition">
           查看源码
-        </button>
+        </a>
       </div>
     </div>
 
-    <!-- 右侧高级预览卡片 -->
     <div class="relative group">
       <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600 to-cyan-500 opacity-20 blur-xl"></div>
       <div class="relative rounded-2xl border border-white/10 bg-[#0d1527] p-6 shadow-2xl">
@@ -77,21 +93,100 @@
             <div class="text-sm text-white/70 italic">1. Terima kasih banyak.</div>
             <div class="text-xs text-white/40">非常感谢。</div>
           </div>
-          <div class="mt-8 text-xs text-indigo-400 animate-pulse">点击左侧按钮或按任意键进入后台控制台 ➔</div>
+          <div class="mt-8 text-xs text-indigo-400 animate-pulse">点击左侧按钮或进入后台工作台 ➔</div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<footer class="py-4 text-center text-[11px] text-white/20 border-t border-white/5">
-  © 2026 TypeWords ID. Powered by GitHub Pages.
+  <div class="grid md:grid-cols-[1fr_1.1fr] gap-12 items-center pt-12 border-t border-white/5">
+    <div class="space-y-6">
+      <div class="inline-block px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-medium text-indigo-400">
+        单词练习
+      </div>
+      <h3 class="text-3xl md:text-4xl font-bold tracking-tight text-white">
+        科学分阶，让记忆更持久
+      </h3>
+      <p class="text-base text-white/60 leading-relaxed">
+        跟写 ➜ 听写 ➜ 默写，三重递进式练习。FSRS 间隔复习算法自动安排复习时机，不再靠死记硬背。
+      </p>
+      
+      <ul class="space-y-3 text-sm text-white/80">
+        <li class="flex items-start gap-2.5">
+          <span class="text-indigo-400 font-semibold">✓</span>
+          <span><strong>7 种练习模式：</strong>跟写 / 听写 / 自测 / 默写 / 随机复习...</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="text-indigo-400 font-semibold">✓</span>
+          <span><strong>FSRS 智能调度：</strong>复习词自动浮出</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="text-indigo-400 font-semibold">✓</span>
+          <span><strong>错词自动进入循环：</strong>打乱重练，直至完全掌握</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="text-indigo-400 font-semibold">✓</span>
+          <span><strong>快捷操作：</strong>Tab 跳过 / ` 标记已掌握 / Ctrl+R 随机默写</span>
+        </li>
+      </ul>
+      
+      <div class="pt-2">
+        <a href="dashboard.html" class="inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition">
+          去练单词 ➔
+        </a>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-white/10 bg-[#0b111e] p-6 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-6 text-xs text-white/30 font-mono">
+        <div class="flex items-center gap-1.5">
+          <span>←</span><span>→</span><span class="ml-2 px-3 py-0.5 rounded bg-white/5 text-white/50">bahasaindo.id/study</span>
+        </div>
+        <div>payung ➔</div>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="text-center">
+          <span class="text-xs text-indigo-400 font-mono">[/pa.juŋ/ 🔊]</span>
+          <h4 class="text-4xl font-bold text-white tracking-wide mt-1">payung</h4>
+          <p class="text-sm text-white/50 mt-1">n. 伞，雨伞，阳伞；保护伞，庇护</p>
+        </div>
+
+        <div class="bg-white/[0.02] border border-white/5 rounded-xl p-4 space-y-3 text-xs md:text-sm">
+          <div>
+            <p class="text-white/80 font-medium italic">1. Dia membawa payung karena hari ini hujan.</p>
+            <p class="text-white/40 text-xs mt-0.5">他带了把伞，因为今天下雨。</p>
+          </div>
+          <div class="border-t border-white/5 pt-2.5">
+            <p class="text-white/80 font-medium italic">2. Di bawah payung hukum yang sama.</p>
+            <p class="text-white/40 text-xs mt-0.5">在同一个法律框架（保护伞）下。</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs pt-2">
+          <div class="p-2 rounded bg-white/5"><span class="text-white/30 block">短语</span>payung terbuka / 开伞</div>
+          <div class="p-2 rounded bg-white/5"><span class="text-white/30 block">同义</span>pelindung / 保护者</div>
+        </div>
+
+        <div class="flex justify-between items-center text-[11px] text-white/30 pt-2 font-mono">
+          <span>新学词汇</span>
+          <span>16 / 30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="py-6 text-center text-[11px] text-white/20 border-t border-white/5 mt-12">
+  © 2026 TypeWords ID. Powered by GitHub Pages. 本地数据安全隔离保护中。
 </footer>
 
 <script>
-  // 首页按任意键直接跳到工作台
+  // 考虑到用户可能习惯按任意键直接进入，增加人性化体验
   document.addEventListener('keydown', (e) => {
-    if(e.key !== 'Escape') window.location.href = 'dashboard.html';
+    if(e.key === 'Enter') {
+      window.location.href = 'dashboard.html';
+    }
   });
 </script>
 </body>
