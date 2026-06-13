@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>印尼语学习工作台 - Type Words</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #121214;       
+            --bg-card: #1e1e24;       
+            --bg-sidebar: #18181c;    
+            --text-main: #ffffff;     
+            --text-muted: #8a8a93;    
+            --accent-yellow: #f4c430; 
+            --accent-blue: #3b82f6;   
+            --border-color: #2a2a32;  
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Microsoft YaHei', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        
+        .sidebar { width: 240px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; }
+        .logo { font-size: 24px; font-weight: 700; font-style: italic; color: #fff; margin-bottom: 32px; padding-left: 12px; }
+        .nav-menu { list-style: none; flex-grow: 1; }
+        .nav-item { display: flex; align-items: center; padding: 14px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; margin-bottom: 8px; transition: all 0.3s ease; font-size: 15px; }
+        .nav-item i { margin-right: 12px; width: 20px; text-align: center; }
+        .nav-item:hover, .nav-item.active { background-color: #24242b; color: var(--text-main); }
+        .sidebar-footer { color: var(--text-muted); padding-left: 12px; cursor: pointer; }
+
+        .main-content { flex-grow: 1; padding: 32px; overflow-y: auto; }
+        
+        .task-card { background-color: var(--bg-card); border-radius: 16px; padding: 24px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+        .task-left { flex-grow: 1; max-width: 60%; }
+        .task-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .book-icon { background-color: var(--accent-blue); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .task-title { font-size: 22px; font-weight: 600; }
+        .target-date { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .progress-container { margin-bottom: 20px; }
+        .progress-bar-bg { background-color: #2a2a32; height: 10px; border-radius: 5px; width: 100%; overflow: hidden; margin-bottom: 8px; }
+        .progress-bar-fill { background-color: var(--accent-blue); height: 100%; width: 0%; transition: width 0.6s ease; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+
+        .task-buttons { display: flex; gap: 12px; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+        .btn-outline:hover { background-color: rgba(255,255,255,0.05); }
+
+        .task-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+        .target-info { color: var(--text-muted); font-size: 14px; }
+        .target-info span { color: #a855f7; font-size: 18px; font-weight: bold; margin: 0 4px; }
+        .stat-boxes { display: flex; gap: 16px; }
+        .mini-box { border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; width: 130px; text-align: center; background: rgba(0,0,0,0.1); }
+        .mini-box .num { font-size: 28px; font-weight: 700; color: var(--accent-blue); margin-bottom: 4px; }
+        .mini-box .label { font-size: 12px; color: var(--text-muted); }
+
+        .action-buttons { display: flex; gap: 12px; width: 100%; }
+        .btn-yellow { background-color: var(--accent-yellow); color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-grow: 1; justify-content: center; text-decoration: none; }
+        .btn-yellow:hover { background-color: #e5b520; }
+        .btn-dark { background-color: #2e3039; color: var(--text-main); border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+        .stats-dashboard { background-color: var(--bg-card); border-radius: 16px; padding: 24px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .main-stats { display: flex; gap: 16px; flex-grow: 1; }
+        .big-stat-box { border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; flex-grow: 1; text-align: center; }
+        .big-stat-box .num { font-size: 32px; font-weight: 700; color: var(--accent-blue); margin-bottom: 6px; }
+        .big-stat-box .label { font-size: 13px; color: var(--text-muted); }
+
+        .calendar-box { padding-left: 32px; border-left: 1px solid var(--border-color); min-width: 320px; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 14px; font-weight: 600; }
+        .week-days { display: flex; justify-content: space-between; gap: 8px; }
+        .day-column { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+        .day-label { font-size: 12px; color: var(--text-muted); }
+        .day-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 1px solid transparent; }
+        .day-num.active { border: 2px solid var(--accent-blue); color: var(--accent-blue); font-weight: 600; background: rgba(59,130,246,0.1); }
+
+        .dict-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .dict-card { background-color: #22222a; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); cursor: pointer; }
+        .dict-card:hover { background-color: #2a2a35; }
+        .dict-name { font-size: 16px; font-weight: 500; margin-bottom: 24px; }
+        .dict-count { font-size: 13px; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div>
+            <div class="logo">Type Words</div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-item active"><i class="fa-solid fa-font"></i> 单词库</a></li>
+                <li><a href="index1.html" class="nav-item"><i class="fa-solid fa-keyboard"></i> 开始打字</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer"><i class="fa-solid fa-chevron-left"></i></div>
+    </nav>
+
+    <main class="main-content">
+        <div class="task-card">
+            <div class="task-left">
+                <div class="task-header">
+                    <div class="book-icon"><i class="fa-solid fa-hashtag"></i></div>
+                    <h2 id="currentDictName" class="task-title">生活用语30词</h2>
+                </div>
+                <p class="target-date">数据存储状态：本地安全存储 (Local)</p>
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div id="mainProgressBar" class="progress-bar-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="mainProgressPct">当前进度：已学 0%</span>
+                        <span id="mainProgressRatio">0 / 30 词</span>
+                    </div>
+                </div>
+                <div class="task-buttons">
+                    <button class="btn-outline" onclick="location.href='index1.html'"><i class="fa-solid fa-arrows-rotate"></i> 切换词典</button>
+                </div>
+            </div>
+
+            <div class="task-right">
+                <div class="target-info">智能词库联动系统</div>
+                <div class="stat-boxes">
+                    <div class="mini-box">
+                        <div id="boxMasteredCount" class="num">0</div>
+                        <div class="label">已掌握词</div>
+                    </div>
+                    <div class="mini-box">
+                        <div id="boxWrongCount" class="num">0</div>
+                        <div class="label">曾答错词</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="index1.html" class="btn-yellow">继续练习 <i class="fa-solid fa-circle-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">今日与总览数据</h3>
+        <div class="stats-dashboard">
+            <div class="main-stats">
+                <div class="big-stat-box">
+                    <div id="statTodayMin" class="num">0</div>
+                    <div class="label">今日学习时长 (分钟)</div>
+                </div>
+                <div class="big-stat-box">
+                    <div id="statStreakDays" class="num">0</div>
+                    <div class="label">连续打卡 (天)</div>
+                </div>
+                <div class="big-stat-box">
+                    <div id="statTotalMin" class="num">0</div>
+                    <div class="label">总累计时长 (分钟)</div>
+                </div>
+            </div>
+
+            <div class="calendar-box">
+                <div class="calendar-header"><span>近7天打卡记录</span></div>
+                <div id="weekDaysContainer" class="week-days">
+                    </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">我的词典细节</h3>
+        <div class="dict-grid">
+            <div class="dict-card">
+                <div class="dict-name">生活用语30词</div>
+                <div id="card-life" class="dict-count">已掌握 0 / 30</div>
+            </div>
+            <div class="dict-card">
+                <div class="dict-name">数字时间25词</div>
+                <div id="card-numbers" class="dict-count">已掌握 0 / 25</div>
+            </div>
+            <div class="dict-card">
+                <div class="dict-name">雅加达本地25词</div>
+                <div id="card-jakarta" class="dict-count">已掌握 0 / 25</div>
+            </div>
+            <div class="dict-card">
+                <div class="dict-name">社交俚语20词</div>
+                <div id="card-slang" class="dict-count">已掌握 0 / 20</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 四个词典内置的词数大小
+        const DICT_SIZES = { life: 30, numbers: 25, jakarta: 25, slang: 20 };
+        const DICT_NAMES = { life: '生活用语30词', numbers: '数字时间25词', jakarta: '雅加达本地25词', slang: '社交俚语20词' };
+
+        function loadDashboardData() {
+            // 1. 获取当前正在练习的词典
+            let currentDict = localStorage.getItem('tw_dict') || 'life';
+            document.getElementById('currentDictName').textContent = DICT_NAMES[currentDict] || '印尼语词典';
+
+            // 2. 解析学习掌握进度
+            let progress = {};
+            try { progress = JSON.parse(localStorage.getItem('typewords_v3') || '{}'); } catch(e){}
+
+            let totalMastered = 0;
+            let totalWrong = 0;
+            let currentDictMastered = 0;
+
+            // 循环遍历4个词库的数据
+            for (let key in DICT_SIZES) {
+                let dictProg = progress[key] || {};
+                let masteredCount = 0;
+                for (let word in dictProg) {
+                    if (dictProg[word].c >= 2) masteredCount++;
+                    if (dictProg[word].w > 0) totalWrong++;
+                }
+                totalMastered += masteredCount;
+                if (key === currentDict) {
+                    currentDictMastered = masteredCount;
+                }
+                // 更新底层小卡片进度
+                let cardEl = document.getElementById('card-' + key);
+                if (cardEl) cardEl.textContent = `已掌握 ${masteredCount} / ${DICT_SIZES[key]}`;
+            }
+
+            // 更新顶部控制台大卡片
+            document.getElementById('boxMasteredCount').textContent = totalMastered;
+            document.getElementById('boxWrongCount').textContent = totalWrong;
+
+            // 计算当前正在练习的词典百分比进度
+            let currentSize = DICT_SIZES[currentDict] || 30;
+            let pct = Math.round((currentDictMastered / currentSize) * 100);
+            document.getElementById('mainProgressBar').style.width = pct + '%';
+            document.getElementById('mainProgressPct').textContent = `当前进度：已学 ${pct}%`;
+            document.getElementById('mainProgressRatio').textContent = `${currentDictMastered} / ${currentSize} 词`;
+
+            // 3. 载入练习时间
+            let todayMin = Math.round(parseFloat(localStorage.getItem('tw_today_duration') || '0'));
+            let totalMin = Math.round(parseFloat(localStorage.getItem('tw_total_duration') || '0'));
+            let streakDays = parseInt(localStorage.getItem('tw_streak_days') || '0');
+
+            document.getElementById('statTodayMin').textContent = todayMin;
+            document.getElementById('statTotalMin').textContent = totalMin;
+            document.getElementById('statStreakDays').textContent = streakDays || (localStorage.getItem('tw_history_dates') ? JSON.parse(localStorage.getItem('tw_history_dates')).length : 0);
+
+            // 4. 渲染最近 7 天的动态打卡小日历
+            renderWeekCalendar();
+        }
+
+        function renderWeekCalendar() {
+            let history = [];
+            try { history = JSON.parse(localStorage.getItem('tw_history_dates') || '[]'); } catch(e){}
+            let container = document.getElementById('weekDaysContainer');
+            container.innerHTML = '';
+
+            const weekLabels = ['日', '一', '二', '三', '四', '五', '六'];
+            let today = new Date();
+
+            // 生成从 6 天前到今天的最近 7 天日历
+            for (let i = 6; i >= 0; i--) {
+                let d = new Date();
+                d.setDate(today.getDate() - i);
+                let dateStr = d.toISOString().slice(0, 10);
+                let isMasteredToday = history.includes(dateStr);
+                
+                let dayLabel = weekLabels[d.getDay()];
+                let dayNum = d.getDate();
+
+                let col = document.createElement('div');
+                col.className = 'day-column';
+                col.innerHTML = `
+                    <span class="day-label">${dayLabel}</span>
+                    <span class="day-num ${isMasteredToday ? 'active' : ''}">${dayNum}</span>
+                `;
+                container.appendChild(col);
+            }
+        }
+
+        // 页面启动时加载
+        window.onload = loadDashboardData;
+    </script>
+</body>
+</html>
